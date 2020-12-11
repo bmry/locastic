@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    User:
+    <div class="table-responsive col-md-8">
+
+        <table class="table responsive table-bordered">
+            <thead>
+            <tr>
+                <th>Scopes</th>
+                <th>Claims</th>
+            </tr>
+            </thead>
+            <tbody>
+            <form method="post">
+            {% for scope,claims  in scopes %}
+
+                <tr>
+                    <td>
+                        {{ scope }}
+                    </td>
+                    <td>
+                        <ul>
+                            {% for name,uri in claims  %}
+                                <li> <input class="form-check-input"  name="scope[{{ scope }}][]" value="{{ uri }}" type="checkbox" {% if uri in userCurrentClaims %} checked="checked" {% endif %}> {{ name }} </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+           <div class="row">
+               <button class="btn btn-primary" type="submit">Update Profile</button>
+           </div>
+        </form>
+    </div>
+
+{% endblock body %}

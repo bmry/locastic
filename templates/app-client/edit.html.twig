@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% form_theme form 'jquery.collection.html.twig' %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="form-group">
+        <div class="col-md-6">
+            {{ form_row(form.name) }}
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+        <div class="col-md-6">
+            {{ form_row(form.baseUri) }}
+        </div>
+        </div>
+    </div>
+<div class="row">
+        <div class="form-group">
+        <div class="col-md-6">
+            {{ form_row(form.redirectUrl) }}
+        </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            {{ form_widget(form.clientId) }}
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-outline-primary"  onclick="copy('app_client_clientId')">Copy</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_widget(form.clientSecret) }}
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-outline-primary" onclick="copy('app_client_clientSecret')">Copy</button>
+        </div>
+    </div>
+
+    <div class="row">
+    <div class="col-md-6">
+        <button type="submit" class="btn btn-small btn-primary"> Submit</button>
+        <a class="btn btn-outline-primary"  href="{{ path('microservice_edit_scope', {microserviceId: application.getId()}) }}"> Add Scope</a>
+    </div>
+    </div>
+    {{ form_end(form) }}
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>
+
+    <script type="text/javascript">
+        $('.my-selector').collection();
+    </script>
+
+    <script>
+
+        function copy(fieldId) {
+            /* Get the text field */
+            var copyText = document.getElementById(fieldId);
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            document.execCommand("copy");
+
+        }
+    </script>
+{% endblock body %}

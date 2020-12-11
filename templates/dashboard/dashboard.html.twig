@@ -1,0 +1,38 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row justify-content-md-center">
+
+        <div class="col col-lg-6">
+            <h4>Welcome {{ app.user.email }}</h4>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+            <div class="card" >
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% if  is_granted('ROLE_MS_OWNER') == true %}
+                            <li class="list-group-item"><a href="{{ path('microservice_new') }}" class="btn btn-outline-primary" >Register Microservice</a></li>
+                            <li class="list-group-item"><a href="{{ path('microservice_list') }}" class="btn btn-outline-primary" >List Microservice</a></li>
+
+                        {% endif %}
+
+                        {% if  is_granted('ROLE_CLIENT_ADMIN') == true %}
+                            <li class="list-group-item"><a href="{{ path('user_list') }}" class="btn btn-outline-primary" >List Client</a></li>
+                        {% endif %}
+
+                        {% if  is_granted('ROLE_360_ADMIN') == true %}
+                            <li class="list-group-item"><a href="{{ path('user_list') }}" class="btn btn-outline-primary" >List Client</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock body %}

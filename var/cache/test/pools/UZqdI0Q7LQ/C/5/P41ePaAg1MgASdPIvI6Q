@@ -1,0 +1,58 @@
+<?php //%255BApp%255CEntity%255CMicroservice%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['ApiPlatform\\Core\\Annotation\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Annotation\\ApiResource')),
+        clone ($p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'repositoryClass' => [
+                'App\\Repository\\MicroserviceRepository',
+            ],
+            'collectionOperations' => [
+                1 => [
+                    'register_microservice' => [
+                        'method' => 'POST',
+                        'path' => '/gk_register_microservice',
+                        'controller' => 'App\\Controller\\Gatekeeper\\Microservices\\RegisterMicroserviceAction',
+                    ],
+                ],
+            ],
+            'itemOperations' => [
+                1 => [],
+            ],
+            'attributes' => [
+                1 => [
+                    'output' => 'App\\DTO\\Microservice\\MicroserviceOutput',
+                    'input' => 'App\\DTO\\Microservice\\MicroserviceInput',
+                ],
+            ],
+            'message' => [
+                2 => 'Application with same name already exist.',
+            ],
+            'fields' => [
+                2 => [
+                    'name',
+                    'user',
+                ],
+            ],
+            'errorPath' => [
+                2 => 'name',
+            ],
+            'groups' => [
+                2 => [
+                    'Default',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

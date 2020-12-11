@@ -1,0 +1,28 @@
+<?php //%255BApp%255CModel%255CScope%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['ApiPlatform\\Core\\Annotation\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Annotation\\ApiResource')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'collectionOperations' => [
+                [
+                    'assign_scope' => [
+                        'method' => 'POST',
+                        'path' => '/users/{id}/assign_scope',
+                        'controller' => 'App\\Controller\\Gatekeeper\\Scope\\AssignScopeControllerAction',
+                    ],
+                ],
+            ],
+            'itemOperations' => [
+                [],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

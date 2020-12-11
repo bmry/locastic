@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="table-responsive">
+        <table class="table responsive">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for user  in users %}
+                <tr>
+                    <td>
+                        <a href="">
+                            {{ user.email }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('user_profile', {id: user.id}) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="k-button-icon"></i> Profile
+                        </a>
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+{% endblock body %}

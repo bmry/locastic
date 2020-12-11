@@ -1,0 +1,40 @@
+<?php //%255BApp%255CModel%255CRegistration%255CRegistration%2524password%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Validator\\Constraints\\NotNull'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotNull')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
+        clone ($p['Rollerworks\\Component\\PasswordStrength\\Validator\\Constraints\\PasswordStrength'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Rollerworks\\Component\\PasswordStrength\\Validator\\Constraints\\PasswordStrength')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'groups' => [
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+            ],
+            'message' => [
+                2 => 'Password must contain at least one lower, one uppercase alpha character, one digit,one special character and must be at least 7 character long',
+            ],
+            'minLength' => [
+                2 => 7,
+            ],
+            'minStrength' => [
+                2 => 4,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

@@ -1,0 +1,74 @@
+<?php //App_Entity_User
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Serializer\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Mapping\\ClassMetadata')),
+        clone ($p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata')),
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\User',
+                'id',
+                'email',
+                'firstName',
+                'lastName',
+                'roles',
+                'password',
+                'isVerified',
+                'verificationRequests',
+                'profilePicture',
+                'username',
+                'salt',
+                'verified',
+            ],
+            'attributesMetadata' => [
+                [
+                    'id' => $o[1],
+                    'email' => $o[2],
+                    'firstName' => $o[3],
+                    'lastName' => $o[4],
+                    'roles' => $o[5],
+                    'password' => $o[6],
+                    'isVerified' => $o[7],
+                    'verificationRequests' => $o[8],
+                    'profilePicture' => $o[9],
+                    'username' => $o[10],
+                    'salt' => $o[11],
+                    'verified' => $o[12],
+                ],
+            ],
+            'groups' => [
+                2 => [
+                    'read',
+                    'write',
+                ],
+                [
+                    'read',
+                    'write',
+                ],
+                [
+                    'write',
+                ],
+                6 => [
+                    'read',
+                    'write',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

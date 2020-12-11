@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Register</h1>
+
+    <form action="{{ path('register_ms-owner') }}" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <label>Email
+                <input class="form-control"type="text" name="email" />
+            </label>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label>Password
+                <input class="form-control"type="password" name="password" />
+            </label>
+        </div>
+
+    </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+        <a href="{{  path('app_login') }}" class="btn btn-outline-primary" >
+                Login
+        </a>
+{% endblock %}
