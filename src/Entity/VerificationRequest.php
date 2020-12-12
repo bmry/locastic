@@ -13,11 +13,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     itemOperations={
-        "update_verification_request" ={
+ *      "update_verification_request" ={
  *          "controller" = "App\Controller\Locastic\VerificationRequest\UpdateVerificationRequestAction",
  *          "deserialize"=false,
  *          "path"="/verification-requests/{id}",
  *          "method"="POST",
+ *          "openapi_context"={
+ *                  "parameters"={
+ *                      {"in"="path", "name"="id", "type"="integer", "required"="true"},
+ *                  },
+ *              }
+ *      },
+ *     "get_verification_request" ={
+ *          "controller" = "App\Controller\Locastic\VerificationRequest\GetVerificationRequestAction",
+ *          "deserialize"=false,
+ *             "normalization_context"={"groups"={"initiate:read"}},
+ *             "denormalization_context"={"groups"={"initiate:write"}},
+ *          "path"="/verification-requests/{id}",
+ *          "method"="GET",
  *          "openapi_context"={
  *                  "parameters"={
  *                      {"in"="path", "name"="id", "type"="integer", "required"="true"},
@@ -67,7 +80,6 @@ class VerificationRequest
     private $id;
 
     /**
-     * @Groups({"initiate:read"})
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="verificationRequests")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -88,7 +100,7 @@ class VerificationRequest
 
     /**
      * @var File|null
-     * @Groups({"initiate:read"})
+     * @Groups({"initiate:write"})
      */
     public $image;
 
@@ -99,7 +111,6 @@ class VerificationRequest
 
     /**
      * @Groups({"initiate:read", "initiate:write" })
-     * @Assert\NotNull()
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $initiationMessage;

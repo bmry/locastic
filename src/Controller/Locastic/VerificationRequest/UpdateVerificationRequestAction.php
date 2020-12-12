@@ -3,7 +3,6 @@
 namespace App\Controller\Locastic\VerificationRequest;
 
 
-use App\Entity\Enum\EnumVerificationRequestStatusType;
 use App\Entity\VerificationRequest;
 use App\Event\VerificationRequest\VerificationRequestUpdateEvent;
 use App\Exception\LocasticException;
@@ -12,7 +11,6 @@ use App\Repository\VerificationRequestRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
 class UpdateVerificationRequestAction
@@ -33,17 +31,18 @@ class UpdateVerificationRequestAction
         VerificationRequestRepository $verificationRequestRepository
     ){
 
+
         try {
             $verificationRequestUpdateEvent = new VerificationRequestUpdateEvent($data);
             $eventDispatcher->dispatch($verificationRequestUpdateEvent, VerificationRequestUpdateEvent::NAME);
 
-        }catch (LocasticException  $locasticException){
+        }catch (VerificationRequestException  $verificationRequestException){
             $message = [
-                'message' => $locasticException->getMessage()
+                'message' => $verificationRequestException->getMessage()
             ];
 
-            $logger->error($locasticException);
-            return new JsonResponse($message);
+            $logger->error($verificationRequestException);
+            return new JsonResponse($message, $verificationRequestException->getCode());
         }
 
 

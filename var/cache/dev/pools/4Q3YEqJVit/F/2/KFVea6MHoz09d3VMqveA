@@ -45,15 +45,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 ],
             ],
             'groups' => [
-                2 => [
-                    'initiate:read',
-                ],
                 4 => [
                     'initiate:read',
                     'initiate:write',
                 ],
                 [
-                    'initiate:read',
+                    'initiate:write',
                 ],
                 7 => [
                     'initiate:read',

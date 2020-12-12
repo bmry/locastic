@@ -11,6 +11,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
+    public const UPLOAD_DIR="/upload/image/";
+
     private $targetDirectory;
     private $slugger;
 

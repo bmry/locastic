@@ -55,6 +55,56 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                             ],
                         ],
                     ],
+                    'get_verification_request' => [
+                        'controller' => 'App\\Controller\\Locastic\\VerificationRequest\\GetVerificationRequestAction',
+                        'deserialize' => false,
+                        'normalization_context' => [
+                            'groups' => [
+                                'initiate:read',
+                            ],
+                        ],
+                        'denormalization_context' => [
+                            'groups' => [
+                                'initiate:write',
+                            ],
+                        ],
+                        'path' => '/verification-requests/{id}',
+                        'method' => 'GET',
+                        'openapi_context' => [
+                            'parameters' => [
+                                [
+                                    'in' => 'path',
+                                    'name' => 'id',
+                                    'type' => 'integer',
+                                    'required' => 'true',
+                                ],
+                            ],
+                        ],
+                        'input' => null,
+                        'output' => null,
+                        'input_formats' => [
+                            'jsonld' => [
+                                'application/ld+json',
+                            ],
+                            'json' => [
+                                'application/json',
+                            ],
+                            'html' => [
+                                'text/html',
+                            ],
+                        ],
+                        'output_formats' => [
+                            'jsonld' => [
+                                'application/ld+json',
+                            ],
+                            'json' => [
+                                'application/json',
+                            ],
+                            'html' => [
+                                'text/html',
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'collectionOperations' => [

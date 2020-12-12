@@ -9,6 +9,7 @@ use App\Event\VerificationRequest\VerificationRequestUpdateEvent;
 use App\Exception\VerificationRequest\VerificationOperationDeniedException;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -32,18 +33,25 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
     private  $fileUploader;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * VerificationRequestUpdateSubscriber constructor.
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         RequestStack $requestStack,
-        FileUploader $fileUploader
+        FileUploader $fileUploader,
+        LoggerInterface $logger
     )
     {
         $this->entityManager = $entityManager;
         $this->request  = $requestStack->getCurrentRequest();
         $this->fileUploader = $fileUploader;
+        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents()
@@ -61,7 +69,6 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
     public function onUpdateVerificationRequest(
         VerificationRequestUpdateEvent $verificationRequestUpdateEvent
     ){
-
         $verificationRequest = $verificationRequestUpdateEvent->getVerificationRequest();
 
         if($verificationRequest->getStatus() !==
@@ -74,7 +81,7 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
             $imagePath = $this->fileUploader->upload($uploadedImage);
             $verificationRequest->setImagePath($imagePath);
         }
-        
+
         $this->entityManager->flush();
 
     }

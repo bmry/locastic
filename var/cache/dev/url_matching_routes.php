@@ -45,8 +45,10 @@ return [
                         .'|(*:331)'
                     .')'
                 .')'
-                .'|/verification\\-requests/([^/]++)(*:373)'
-                .'|/(*:382)'
+                .'|/verification\\-requests/([^/]++)(?'
+                    .'|(*:376)'
+                .')'
+                .'|/(*:386)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -70,8 +72,11 @@ return [
             [['_route' => 'api_blogs_put_item', '_controller' => 'api_platform.action.put_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'api_blogs_patch_item', '_controller' => 'api_platform.action.patch_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'patch'], ['id', '_format'], ['PATCH' => 0], null, false, true, null],
         ],
-        373 => [[['_route' => 'api_verification_requests_update_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\UpdateVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'update_verification_request'], ['id'], ['POST' => 0], null, false, true, null]],
-        382 => [
+        376 => [
+            [['_route' => 'api_verification_requests_update_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\UpdateVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'update_verification_request'], ['id'], ['POST' => 0], null, false, true, null],
+            [['_route' => 'api_verification_requests_get_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\GetVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'get_verification_request'], ['id'], ['GET' => 0], null, false, true, null],
+        ],
+        386 => [
             [['_route' => 'index', '_controller' => 'App\\Controller\\HomeController::home'], [], null, null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],

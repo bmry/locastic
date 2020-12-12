@@ -7,12 +7,18 @@ use App\Entity\VerificationRequest;
 use App\Event\VerificationRequest\InitiateVerificationRequestEvent;
 use App\Exception\LocasticException;
 use App\Exception\VerificationRequest\VerificationRequestException;
+use App\Exception\VerificationRequest\VerificationRequestMissingParameterException;
+use App\Utility\VerificationRequestResponseBuilder;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
+/**
+ * Class InitiateVerificationRequestAction
+ * @package App\Controller\Locastic\VerificationRequest
+ */
 class InitiateVerificationRequestAction
 {
     /**
@@ -20,45 +26,43 @@ class InitiateVerificationRequestAction
      * @param EventDispatcherInterface $eventDispatcher
      * @param Security $security
      * @param LoggerInterface $logger
-     * @return JsonResponse
+     * @return VerificationRequest|JsonResponse
      */
     public function __invoke(
-        VerificationRequest $data,
+        Request $request,
         EventDispatcherInterface $eventDispatcher,
         Security $security,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        VerificationRequestResponseBuilder $verificationRequestResponseBuilder
     )
     {
-
         try {
-            $verificationRequest = new VerificationRequest();
-            $imageFile = $request->files->get('image');
-            $initiationMessage = $request->request->get('initiation_message');
 
-            if (!$imageFile) {
-                throw new VerificationRequestException('Image of ID is required');
+            if (!$request->files->has('image')) {
+                throw new VerificationRequestMissingParameterException("Image");
             }
 
+            $imageFile = $request->files->get('image');
+            $initiationMessage = $request->request->get('initiation_message');
+            $verificationRequest = new VerificationRequest();
             $verificationRequest->setUser($security->getUser());
             $verificationRequest->image = $imageFile;
             $verificationRequest->setInitiationMessage($initiationMessage);
             $initiateVerificationRequestEvent = new InitiateVerificationRequestEvent($verificationRequest);
             $eventDispatcher->dispatch($initiateVerificationRequestEvent, InitiateVerificationRequestEvent::NAME);
+
+            return $verificationRequestResponseBuilder->buildResponse($verificationRequest);
+
+        }catch (VerificationRequestException  $verificationRequestException){
             $message = [
-                'message' => "Verification request successfully submitted"
+                'error' => $verificationRequestException->getMessage()
             ];
 
-            $response = new JsonResponse($message);
+            $logger->error($verificationRequestException);
+            $response = new JsonResponse($message,$verificationRequestException->getCode() );
 
-        }catch (LocasticException  $locasticException){
-            $message = [
-                'message' => $locasticException->getMessage()
-            ];
-
-            $logger->error($locasticException);
-            $response = new JsonResponse($message,500);
+            return $response;
         }
 
-        return $response;
     }
 }

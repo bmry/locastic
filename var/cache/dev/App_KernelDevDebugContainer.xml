@@ -576,6 +576,9 @@
     <service id="App\Controller\Locastic\User\RegisterUserControllerAction" class="App\Controller\Locastic\User\RegisterUserControllerAction" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
+    <service id="App\Controller\Locastic\VerificationRequest\GetVerificationRequestAction" class="App\Controller\Locastic\VerificationRequest\GetVerificationRequestAction" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+    </service>
     <service id="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction" class="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
@@ -611,14 +614,17 @@
       <tag name="kernel.event_subscriber"/>
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="request_stack"/>
+      <argument type="service" id="App\Service\FileUploader"/>
+      <argument type="service" id="monolog.logger"/>
     </service>
     <service id="App\Exception\Blog\BlogNotFoundException" class="App\Exception\Blog\BlogNotFoundException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\ImageUploadException" class="App\Exception\ImageUploadException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\LocasticException" class="App\Exception\LocasticException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\Registration\RegistrationErrorException" class="App\Exception\Registration\RegistrationErrorException" autowire="true" autoconfigure="true"/>
+    <service id="App\Exception\VerificationRequest\InvalidVerificationRequestException" class="App\Exception\VerificationRequest\InvalidVerificationRequestException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\VerificationRequest\VerificationOperationDeniedException" class="App\Exception\VerificationRequest\VerificationOperationDeniedException" autowire="true" autoconfigure="true"/>
     <service id="App\Exception\VerificationRequest\VerificationRequestException" class="App\Exception\VerificationRequest\VerificationRequestException" autowire="true" autoconfigure="true"/>
-    <service id="App\Factory\MicroserviceScopeFactory" class="App\Factory\MicroserviceScopeFactory" autowire="true" autoconfigure="true"/>
+    <service id="App\Exception\VerificationRequest\VerificationRequestMissingParameterException" class="App\Exception\VerificationRequest\VerificationRequestMissingParameterException" autowire="true" autoconfigure="true"/>
     <service id="App\Repository\BlogRepository" class="App\Repository\BlogRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -630,17 +636,6 @@
     <service id="App\Repository\VerificationRequestRepository" class="App\Repository\VerificationRequestRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Security\ApiGuardAuthenticator" class="App\Security\ApiGuardAuthenticator" autowire="true" autoconfigure="true"/>
-    <service id="App\Security\ClientGuardAuthenticator" class="App\Security\ClientGuardAuthenticator" autowire="true" autoconfigure="true"/>
-    <service id="App\Security\EmailVerifier" class="App\Security\EmailVerifier" autowire="true" autoconfigure="true">
-      <argument type="service" id="symfonycasts.verify_email.helper"/>
-      <argument type="service" id="mailer.mailer"/>
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-    </service>
-    <service id="App\Security\GatekeeperGuardAuthenticator" class="App\Security\GatekeeperGuardAuthenticator" autowire="true" autoconfigure="true">
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <argument type="service" id="security.user_password_encoder.generic"/>
     </service>
     <service id="App\Security\LoginFormAuthenticator" class="App\Security\LoginFormAuthenticator" autowire="true" autoconfigure="true">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
@@ -656,6 +651,9 @@
       <argument type="service" id="App\Swagger\SwaggerDecorator.inner"/>
     </service>
     <service id="App\Utility\ResponseUtil" class="App\Utility\ResponseUtil" autowire="true" autoconfigure="true"/>
+    <service id="App\Utility\VerificationRequestResponseBuilder" class="App\Utility\VerificationRequestResponseBuilder" autowire="true" autoconfigure="true">
+      <argument type="service" id="request_stack"/>
+    </service>
     <service id="App\Validation\RegistrationValidator" class="App\Validation\RegistrationValidator" autowire="true" autoconfigure="true">
       <argument type="service" id="debug.validator"/>
       <argument type="service" id="App\Repository\UserRepository"/>
@@ -7097,13 +7095,20 @@
         <argument key="eventDispatcher" type="service" id="debug.event_dispatcher"/>
       </argument>
     </service>
-    <service id=".service_locator.UiUgaMx" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.igGC8lq" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="data" type="service" id=".errored..service_locator.UiUgaMx.App\Entity\VerificationRequest"/>
+        <argument key="data" type="service" id=".errored..service_locator.igGC8lq.App\Entity\VerificationRequest"/>
+        <argument key="verificationRequestResponseBuilder" type="service" id="App\Utility\VerificationRequestResponseBuilder"/>
+      </argument>
+    </service>
+    <service id=".service_locator.v4VA91o" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
         <argument key="eventDispatcher" type="service" id="debug.event_dispatcher"/>
         <argument key="logger" type="service" id="monolog.logger"/>
         <argument key="security" type="service" id="security.helper"/>
+        <argument key="verificationRequestResponseBuilder" type="service" id="App\Utility\VerificationRequestResponseBuilder"/>
       </argument>
     </service>
     <service id=".service_locator.WVn.d1m" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -7116,7 +7121,7 @@
         <argument key="verificationRequestRepository" type="service" id="App\Repository\VerificationRequestRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.E4tX2pg" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.0OJ2HuH" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\Locastic\Blog\GetBlogControllerAction::__invoke" type="service" id=".service_locator.3u0TQK8"/>
@@ -7124,7 +7129,8 @@
         <argument key="App\Controller\Locastic\Blog\PostBlogControllerAction::__invoke" type="service" id=".service_locator.UTpHpL."/>
         <argument key="App\Controller\Locastic\Blog\UpdateBlogControllerAction::__invoke" type="service" id=".service_locator.UTpHpL."/>
         <argument key="App\Controller\Locastic\User\RegisterUserControllerAction::__invoke" type="service" id=".service_locator.aDz1WHK"/>
-        <argument key="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction::__invoke" type="service" id=".service_locator.UiUgaMx"/>
+        <argument key="App\Controller\Locastic\VerificationRequest\GetVerificationRequestAction::__invoke" type="service" id=".service_locator.igGC8lq"/>
+        <argument key="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction::__invoke" type="service" id=".service_locator.v4VA91o"/>
         <argument key="App\Controller\Locastic\VerificationRequest\UpdateVerificationRequestAction::__invoke" type="service" id=".service_locator.WVn.d1m"/>
         <argument key="App\Kernel::loadRoutes" type="service" id=".service_locator.C9JCBPC"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service" id=".service_locator.C9JCBPC"/>
@@ -7142,8 +7148,10 @@
         <argument key="App\Controller\Locastic\Blog\UpdateBlogControllerAction" type="service" id=".service_locator.UTpHpL."/>
         <argument key="App\Controller\Locastic\User\RegisterUserControllerAction:__invoke" type="service" id=".service_locator.aDz1WHK"/>
         <argument key="App\Controller\Locastic\User\RegisterUserControllerAction" type="service" id=".service_locator.aDz1WHK"/>
-        <argument key="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction:__invoke" type="service" id=".service_locator.UiUgaMx"/>
-        <argument key="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction" type="service" id=".service_locator.UiUgaMx"/>
+        <argument key="App\Controller\Locastic\VerificationRequest\GetVerificationRequestAction:__invoke" type="service" id=".service_locator.igGC8lq"/>
+        <argument key="App\Controller\Locastic\VerificationRequest\GetVerificationRequestAction" type="service" id=".service_locator.igGC8lq"/>
+        <argument key="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction:__invoke" type="service" id=".service_locator.v4VA91o"/>
+        <argument key="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction" type="service" id=".service_locator.v4VA91o"/>
         <argument key="App\Controller\Locastic\VerificationRequest\UpdateVerificationRequestAction:__invoke" type="service" id=".service_locator.WVn.d1m"/>
         <argument key="App\Controller\Locastic\VerificationRequest\UpdateVerificationRequestAction" type="service" id=".service_locator.WVn.d1m"/>
         <argument key="kernel:loadRoutes" type="service" id=".service_locator.C9JCBPC"/>
@@ -7647,12 +7655,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.E4tX2pg"/>
+      <argument type="service" id=".service_locator.0OJ2HuH"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.E4tX2pg"/>
+      <argument type="service" id=".service_locator.0OJ2HuH"/>
     </service>
     <service id=".debug.http_client.inner" class="Symfony\Contracts\HttpClient\HttpClientInterface" public="false">
       <argument type="collection"/>
@@ -7676,7 +7684,7 @@
     <service id=".errored..service_locator.gDUDmgQ.App\Entity\Blog" class="App\Entity\Blog"/>
     <service id=".errored..service_locator.UTpHpL..App\Entity\Blog" class="App\Entity\Blog"/>
     <service id=".errored..service_locator.aDz1WHK.App\Entity\User" class="App\Entity\User"/>
-    <service id=".errored..service_locator.UiUgaMx.App\Entity\VerificationRequest" class="App\Entity\VerificationRequest"/>
+    <service id=".errored..service_locator.igGC8lq.App\Entity\VerificationRequest" class="App\Entity\VerificationRequest"/>
     <service id=".errored..service_locator.WVn.d1m.App\Entity\VerificationRequest" class="App\Entity\VerificationRequest"/>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
@@ -8202,7 +8210,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.WaGDpDt" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.E4tX2pg"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.0OJ2HuH"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
     <service id="Psr\Log\LoggerInterface $consoleLogger" alias="monolog.logger.console"/>
