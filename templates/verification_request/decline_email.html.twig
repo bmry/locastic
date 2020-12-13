@@ -1,0 +1,15 @@
+<h1>Hi! {{ user }} </h1>
+
+    <p>
+        Sorry, your verification has  been declined.<br>
+    </p>
+    {% if decline_reason %}
+    <p>
+       <strong> Reason:</strong><br>
+        {{ decline_reason }}
+    </p>
+    {% endif %}
+    <p>
+        Kind Regards,
+        Locastic Admin
+    </p>

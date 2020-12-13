@@ -5,10 +5,9 @@ namespace App\Controller\Locastic\VerificationRequest;
 
 use App\Entity\VerificationRequest;
 use App\Event\VerificationRequest\InitiateVerificationRequestEvent;
-use App\Exception\LocasticException;
 use App\Exception\VerificationRequest\VerificationRequestException;
-use App\Exception\VerificationRequest\VerificationRequestMissingParameterException;
-use App\Utility\VerificationRequestResponseBuilder;
+use App\Repository\VerificationRequestRepository;
+use App\Validation\VerificationRequest\InitiateVerificationRequestValidator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +25,7 @@ class InitiateVerificationRequestAction
      * @param EventDispatcherInterface $eventDispatcher
      * @param Security $security
      * @param LoggerInterface $logger
+     * @param VerificationRequestRepository $verificationRequestRepository
      * @return VerificationRequest|JsonResponse
      */
     public function __invoke(
@@ -33,15 +33,12 @@ class InitiateVerificationRequestAction
         EventDispatcherInterface $eventDispatcher,
         Security $security,
         LoggerInterface $logger,
-        VerificationRequestResponseBuilder $verificationRequestResponseBuilder
+        VerificationRequestRepository $verificationRequestRepository,
+        InitiateVerificationRequestValidator $verificationRequestValidator
     )
     {
         try {
-
-            if (!$request->files->has('image')) {
-                throw new VerificationRequestMissingParameterException("Image");
-            }
-
+            $verificationRequestValidator->validate();
             $imageFile = $request->files->get('image');
             $initiationMessage = $request->request->get('initiation_message');
             $verificationRequest = new VerificationRequest();
@@ -51,7 +48,7 @@ class InitiateVerificationRequestAction
             $initiateVerificationRequestEvent = new InitiateVerificationRequestEvent($verificationRequest);
             $eventDispatcher->dispatch($initiateVerificationRequestEvent, InitiateVerificationRequestEvent::NAME);
 
-            return $verificationRequestResponseBuilder->buildResponse($verificationRequest);
+            return $verificationRequest;
 
         }catch (VerificationRequestException  $verificationRequestException){
             $message = [

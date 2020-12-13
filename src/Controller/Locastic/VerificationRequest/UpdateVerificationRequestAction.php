@@ -30,8 +30,6 @@ class UpdateVerificationRequestAction
         LoggerInterface $logger,
         VerificationRequestRepository $verificationRequestRepository
     ){
-
-
         try {
             $verificationRequestUpdateEvent = new VerificationRequestUpdateEvent($data);
             $eventDispatcher->dispatch($verificationRequestUpdateEvent, VerificationRequestUpdateEvent::NAME);
@@ -42,11 +40,12 @@ class UpdateVerificationRequestAction
             ];
 
             $logger->error($verificationRequestException);
+
             return new JsonResponse($message, $verificationRequestException->getCode());
         }
 
 
-        return new JsonResponse($data);
+        return $data;
 
     }
 }

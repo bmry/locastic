@@ -40,3 +40,8 @@ services:
     App\Service\FileUploader:
             arguments:
                 $targetDirectory: '%image_dir%'
+
+    App\Listener\VerificationRequestImageLinkListener:
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+

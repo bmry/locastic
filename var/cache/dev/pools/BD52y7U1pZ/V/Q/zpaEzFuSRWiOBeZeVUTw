@@ -11,8 +11,10 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         'Symfony\\Component\\Serializer\\Annotation\\Groups' => [
             'groups' => [
                 [
-                    'initiate:read',
-                    'initiate:write',
+                    'user:read',
+                    'admin:read',
+                    'admin:write',
+                    'user:get:read',
                 ],
             ],
         ],

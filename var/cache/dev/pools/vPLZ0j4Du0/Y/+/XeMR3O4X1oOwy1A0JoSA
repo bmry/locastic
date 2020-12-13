@@ -40,8 +40,11 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                             ],
                         ],
                     ],
-                    'delete' => [
-                        'method' => 'DELETE',
+                    'post' => [
+                        'security' => 'is_granted(\'ROLE_BLOGGER\')',
+                        'input' => null,
+                        'output' => null,
+                        'route_name' => 'post',
                         'input_formats' => [
                             'jsonld' => [
                                 'application/ld+json',
@@ -51,51 +54,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                             ],
                             'html' => [
                                 'text/html',
-                            ],
-                        ],
-                        'output_formats' => [
-                            'jsonld' => [
-                                'application/ld+json',
-                            ],
-                            'json' => [
-                                'application/json',
-                            ],
-                            'html' => [
-                                'text/html',
-                            ],
-                        ],
-                    ],
-                    'put' => [
-                        'method' => 'PUT',
-                        'input_formats' => [
-                            'jsonld' => [
-                                'application/ld+json',
-                            ],
-                            'json' => [
-                                'application/json',
-                            ],
-                            'html' => [
-                                'text/html',
-                            ],
-                        ],
-                        'output_formats' => [
-                            'jsonld' => [
-                                'application/ld+json',
-                            ],
-                            'json' => [
-                                'application/json',
-                            ],
-                            'html' => [
-                                'text/html',
-                            ],
-                        ],
-                    ],
-                    'patch' => [
-                        'method' => 'PATCH',
-                        'input_formats' => [
-                            'json' => [
-                                'application/merge-patch+json',
-                                'application/x-www-form-urlencoded',
                             ],
                         ],
                         'output_formats' => [
@@ -140,6 +98,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         ],
                     ],
                     'post' => [
+                        'security' => 'is_granted(\'ROLE_BLOGGER\')',
+                        'input' => null,
+                        'output' => null,
                         'method' => 'POST',
                         'input_formats' => [
                             'jsonld' => [

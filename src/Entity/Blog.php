@@ -12,7 +12,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}},
- *     denormalizationContext={"groups"={"write"}}
+ *     denormalizationContext={"groups"={"write"}},
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_BLOGGER')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_BLOGGER')"}
+ *     },
+ *
  * )
  * @ORM\Entity(repositoryClass=BlogRepository::class)
  */
