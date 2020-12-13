@@ -3,7 +3,9 @@
 namespace App\Validation\VerificationRequest;
 
 
+use App\Entity\User;
 use App\Exception\VerificationRequest\DuplicateVerificationRequestException;
+use App\Exception\VerificationRequest\VerificationRequestAlreadyApprovedException;
 use App\Repository\VerificationRequestRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -36,6 +38,7 @@ class NonDuplicateVerificationRequestValidator
 
     /**
      * @throws DuplicateVerificationRequestException
+     * @throws VerificationRequestAlreadyApprovedException
      */
     public function validate():void
     {
@@ -44,6 +47,12 @@ class NonDuplicateVerificationRequestValidator
 
         if($existingVerificationRequest){
             throw new DuplicateVerificationRequestException();
+        }
+
+        $roles = $user->getRoles();
+
+        if(in_array(User::ROLE_BLOGGER, $roles)){
+            throw new VerificationRequestAlreadyApprovedException();
         }
     }
 

@@ -32,6 +32,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class User implements UserInterface
 {
+    public const ROLE_BLOGGER = "ROLE_BLOGGER";
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

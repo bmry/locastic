@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 
 use App\Entity\Enum\EnumVerificationRequestStatusType;
+use App\Entity\User;
 use App\Event\VerificationRequest\ApproveVerificationRequestEvent;
 use App\Event\VerificationRequest\InitiateVerificationRequestEvent;
 use App\Service\LocasticMailer;
@@ -69,7 +70,7 @@ class ApproveVerificationRequestSubscriber implements EventSubscriberInterface
         if(!$verificationRequest->getStatus() !== EnumVerificationRequestStatusType::TYPE_APPROVED) {
             $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_APPROVED);
             $user = $verificationRequest->getUser();
-            $user->addRole('ROLE_BLOGGER');
+            $user->addRole(User::ROLE_BLOGGER);
             $this->entityManager->flush();
 
             try {

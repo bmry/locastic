@@ -4,8 +4,8 @@ namespace App\EventSubscriber;
 
 
 use App\Entity\Enum\EnumVerificationRequestStatusType;
+use App\Entity\User;
 use App\Event\VerificationRequest\DeclineVerificationRequestEvent;
-use App\Event\VerificationRequest\InitiateVerificationRequestEvent;
 use App\Service\LocasticMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -67,10 +67,10 @@ class DeclineVerificationRequestSubscriber implements EventSubscriberInterface
             $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_DECLINED);
             $user = $verificationRequest->getUser();
 
-            if(in_array('ROLE_BLOGGER', $user->getRoles())){
+            if(in_array(User::ROLE_BLOGGER, $user->getRoles())){
                 $roles = $user->getRoles();
                 $roles = array_flip($roles);
-                unset($roles['ROLE_BLOGGER']);
+                unset($roles[User::ROLE_BLOGGER]);
                 $roles = array_flip($roles);
                 $user->setRoles($roles);
             }
