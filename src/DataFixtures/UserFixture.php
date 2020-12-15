@@ -12,7 +12,6 @@ class UserFixture extends Fixture
 {
     private $encoder;
 
-    public const USER_FIXTURE_REFERENCE = 'test-user';
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
@@ -22,25 +21,51 @@ class UserFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $user = new User();
-        $user->setEmail('360admin@360alumni.com');
+        $user->setEmail('admin@locastic.com');
+        $user->setFirstName("Toni");
+        $user->setLastName("Locastic");
         $password = $this->encoder->encodePassword($user, 'Sambam1955@@');
         $user->setPassword($password);
-        $user->setIsVerified(true);
-        $roles = ['ROLE_USER','ROLE_360_ADMIN'];
+        $roles = ['ROLE_USER','ROLE_ADMIN'];
         $user->setRoles($roles);
         $manager->persist($user);
+        $this->addReference('admin_user', $user);
 
         $user = new User();
-        $user->setEmail('msowner@360alumni.com');
+        $user->setEmail('morayo@locastic.com');
+        $user->setFirstName("Morayo");
+        $user->setLastName("Locastic");
         $password = $this->encoder->encodePassword($user, 'Sambam1955@@');
         $user->setPassword($password);
-        $user->setIsVerified(true);
-        $roles = ['ROLE_USER','ROLE_MS_OWNER'];
+        $roles = ['ROLE_USER'];
         $user->setRoles($roles);
         $manager->persist($user);
-        
+        $this->addReference('unverified_user', $user);
+
+        $user = new User();
+        $user->setEmail('blogger@locastic.com');
+        $user->setFirstName("Blogger");
+        $user->setLastName("Locastic");
+        $password = $this->encoder->encodePassword($user, 'Sambam1955@@');
+        $user->setPassword($password);
+        $roles = ['ROLE_USER','ROLE_BLOGGER'];
+        $user->setRoles($roles);
+        $manager->persist($user);
+        $this->addReference('blogger_user', $user);
+
+
+        $user = new User();
+        $user->setEmail('blogger2@locastic.com');
+        $user->setFirstName("Blogger2");
+        $user->setLastName("Locastic");
+        $password = $this->encoder->encodePassword($user, 'Sambam1955@@');
+        $user->setPassword($password);
+        $roles = ['ROLE_USER','ROLE_BLOGGER'];
+        $user->setRoles($roles);
+        $manager->persist($user);
+        $this->addReference('blogger_user_2', $user);
         $manager->flush();
-        $this->addReference(UserFixture::USER_FIXTURE_REFERENCE, $user);
     }
+
 
 }

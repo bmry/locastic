@@ -45,3 +45,5 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
 
+    App\DataPersister\BlogDataPersister:
+      decorates: 'api_platform.doctrine.orm.data_persister'

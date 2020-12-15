@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *         "get",
- *         "post"={"security"="is_granted('ROLE_BLOGGER')"}
+ *         "put"={"security"="is_granted('ROLE_BLOGGER') and object.user == user"}
  *     },
  *
  * )
@@ -37,7 +37,6 @@ class Blog
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Groups({"read"})
      */
     private $postDate;
@@ -58,6 +57,12 @@ class Blog
      */
     private $content;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    public $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -65,15 +70,9 @@ class Blog
 
     public function getPostDate(): ?\DateTimeInterface
     {
-        return $this->postDate;
+        return $this->getCreatedAt();
     }
 
-    public function setPostDate(\DateTimeInterface $postDate): self
-    {
-        $this->postDate = $postDate;
-
-        return $this;
-    }
 
     public function getContent(): ?string
     {
@@ -95,6 +94,18 @@ class Blog
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

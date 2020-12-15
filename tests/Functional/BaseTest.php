@@ -3,16 +3,18 @@
 namespace App\Tests\Functional;
 
 
-use App\Entity\Microservice;
+
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\User;
+use App\Repository\BlogRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\RouterInterface;
 
-class BaseTest extends WebTestCase
+class BaseTest extends ApiTestCase
 {
+
     /**
      * @var KernelBrowser
      */
@@ -30,6 +32,16 @@ class BaseTest extends WebTestCase
      */
     protected $router;
 
+
+    protected $jwtManager;
+
+    protected $currentTestUser;
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
+
+
     public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
         parent::setUp();
@@ -37,22 +49,35 @@ class BaseTest extends WebTestCase
         $this->appContainer = self::$kernel->getContainer();
         $this->entityManager = $this->appContainer->get('doctrine')->getManager();
         $this->router = $this->appContainer->get('router');
+        $this->jwtManager = $this->appContainer->get('lexik_jwt_authentication.jwt_manager');
+        $this->userRepository = self::$container->get(UserRepository::class);
+
 
     }
 
-    protected function login(){
-        $userRepository = static::$container->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('test_user@360alumni.com');
-
-        $this->client->loginUser($testUser);
-    }
-
-    protected function getTestAppClient()
+    protected function getUserToken(string $username = "morayo@locastic.com")
     {
-        $appClientRepo= $this->entityManager->getRepository(Microservice::class);
-        /** @var Microservice $appClient */
-        $appClient = $appClientRepo->find(1);
 
-        return $appClient;
+        $testUser = $this->userRepository->findOneByEmail($username);
+        $token = $this->jwtManager->create($testUser);
+        $this->currentTestUser  = $testUser;
+
+        return $token;
     }
+
+    /**
+     * @param string $userEmail
+     * @return mixed
+     * @throws \Doctrine\ORM\ORMException
+     */
+    protected function getBlogByUser(string $userEmail)
+    {
+        $user =  $testUser = $this->userRepository->findOneByEmail($userEmail);
+        $blogRepo = self::$container->get(BlogRepository::class);
+        $blog =  $blogRepo->findOneBy(['user' => $user]);
+
+        return $blog;
+
+    }
+
 }

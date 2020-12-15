@@ -9,11 +9,9 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         'ApiPlatform\\Core\\Metadata\\Resource\\ResourceNameCollection' => [
             'classes' => [
                 [
-                    'App\\Model\\Registration\\Registration',
-                    'App\\Model\\Registration\\AccountVerification',
-                    'App\\Model\\Scope',
-                    'App\\Entity\\Microservice',
-                    'App\\Entity\\MicroserviceScope',
+                    'App\\Entity\\Blog',
+                    'App\\Entity\\User',
+                    'App\\Entity\\VerificationRequest',
                 ],
             ],
         ],

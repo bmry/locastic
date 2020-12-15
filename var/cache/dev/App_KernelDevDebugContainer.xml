@@ -592,9 +592,17 @@
     <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
     </service>
+    <service id="App\DataFixtures\BlogFixture" class="App\DataFixtures\BlogFixture" autowire="true" autoconfigure="true">
+      <tag name="doctrine.fixture.orm"/>
+    </service>
     <service id="App\DataFixtures\UserFixture" class="App\DataFixtures\UserFixture" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
       <argument type="service" id="security.user_password_encoder.generic"/>
+    </service>
+    <service id="App\DataPersister\BlogDataPersister" class="App\DataPersister\BlogDataPersister" autowire="true" autoconfigure="true">
+      <tag name="api_platform.data_persister" priority="-1000"/>
+      <argument type="service" id="App\DataPersister\BlogDataPersister.inner"/>
+      <argument type="service" id="security.helper"/>
     </service>
     <service id="App\Event\User\UserRegistrationEvent" class="App\Event\User\UserRegistrationEvent" autowire="true" autoconfigure="true"/>
     <service id="App\Event\VerificationRequest\ApproveVerificationRequestEvent" class="App\Event\VerificationRequest\ApproveVerificationRequestEvent" autowire="true" autoconfigure="true"/>
@@ -5872,6 +5880,10 @@
             <argument key="groups" type="collection"/>
           </argument>
           <argument type="collection">
+            <argument key="fixture" type="service" id="App\DataFixtures\BlogFixture"/>
+            <argument key="groups" type="collection"/>
+          </argument>
+          <argument type="collection">
             <argument key="fixture" type="service" id="App\DataFixtures\UserFixture"/>
             <argument key="groups" type="collection"/>
           </argument>
@@ -6427,10 +6439,6 @@
     <service id="api_platform.doctrine.metadata_factory" class="Doctrine\Persistence\Mapping\ClassMetadataFactory" public="false">
       <factory service="doctrine.orm.default_entity_manager" method="getMetadataFactory"/>
     </service>
-    <service id="api_platform.doctrine.orm.data_persister" class="ApiPlatform\Core\Bridge\Doctrine\Common\DataPersister" public="false">
-      <tag name="api_platform.data_persister" priority="-1000"/>
-      <argument type="service" id="doctrine"/>
-    </service>
     <service id="api_platform.doctrine.orm.collection_data_provider" public="false" abstract="true">
       <argument type="service" id="doctrine"/>
       <argument type="tagged_iterator" tag="api_platform.doctrine.orm.query_extension.collection"/>
@@ -6890,8 +6898,12 @@
     </service>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\BlogFixture" class="App\DataFixtures\BlogFixture" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\DataFixtures\BlogFixture" class="App\DataFixtures\BlogFixture" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\UserFixture" class="App\DataFixtures\UserFixture" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataFixtures\UserFixture" class="App\DataFixtures\UserFixture" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.ApiPlatform\Core\DataPersister\DataPersisterInterface.0.App\DataPersister\BlogDataPersister" class="App\DataPersister\BlogDataPersister" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\DataPersister\BlogDataPersister" class="App\DataPersister\BlogDataPersister" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\EventSubscriber\ApproveVerificationRequestSubscriber" class="App\EventSubscriber\ApproveVerificationRequestSubscriber" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\EventSubscriber\ApproveVerificationRequestSubscriber" class="App\EventSubscriber\ApproveVerificationRequestSubscriber" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\EventSubscriber\DeclineVerificationRequestSubscriber" class="App\EventSubscriber\DeclineVerificationRequestSubscriber" autowire="true" abstract="true"/>
@@ -7643,6 +7655,9 @@
     <service id="debug.validator.inner" class="Symfony\Component\Validator\Validator\ValidatorInterface" public="false">
       <factory service="validator.builder" method="getValidator"/>
     </service>
+    <service id="App\DataPersister\BlogDataPersister.inner" class="ApiPlatform\Core\Bridge\Doctrine\Common\DataPersister" public="false">
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Swagger\SwaggerDecorator.inner" class="ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer" public="false">
       <argument type="service" id="api_platform.metadata.resource.metadata_factory.cached"/>
       <argument type="service" id="api_platform.metadata.property.name_collection_factory.cached"/>
@@ -8343,6 +8358,7 @@
     <service id="api_platform.metadata.resource.metadata_factory.operation.inner" alias="api_platform.metadata.resource.filter_metadata_factory.annotation" public="false"/>
     <service id="api_platform.metadata.property.name_collection_factory.inherited.inner" alias="api_platform.metadata.property.name_collection_factory.property_info" public="false"/>
     <service id="api_platform.metadata.resource.metadata_factory.formats.inner" alias="api_platform.metadata.resource.metadata_factory.operation" public="false"/>
+    <service id="api_platform.doctrine.orm.data_persister" alias="App\DataPersister\BlogDataPersister" public="false"/>
     <service id="api_platform.swagger.normalizer.documentation" alias="api_platform.swagger.normalizer.api_gateway" public="false"/>
     <service id="translator.data_collector.inner" alias="translator.default" public="false"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>

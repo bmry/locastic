@@ -2,25 +2,52 @@
 
 return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
     $o = [
-        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Core\\Annotation\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Core\\Annotation\\ApiResource')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
         clone ($p['Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Bridge\\Doctrine\\Validator\\Constraints\\UniqueEntity')),
     ],
     null,
     [
         'stdClass' => [
+            'collectionOperations' => [
+                [
+                    'register_user' => [
+                        'method' => 'POST',
+                        'path' => '/register',
+                        'controller' => 'App\\Controller\\Locastic\\User\\RegisterUserControllerAction',
+                    ],
+                ],
+            ],
+            'itemOperations' => [
+                [],
+            ],
+            'attributes' => [
+                [
+                    'normalization_context' => [
+                        'groups' => [
+                            'read',
+                        ],
+                    ],
+                    'denormalization_context' => [
+                        'groups' => [
+                            'write',
+                        ],
+                    ],
+                ],
+            ],
             'repositoryClass' => [
-                'App\\Repository\\UserRepository',
+                1 => 'App\\Repository\\UserRepository',
             ],
             'message' => [
-                1 => 'There is already an account with this email',
+                2 => 'There is already an account with this email',
             ],
             'fields' => [
-                1 => [
+                2 => [
                     'email',
                 ],
             ],
             'groups' => [
-                1 => [
+                2 => [
                     'Default',
                 ],
             ],
@@ -29,6 +56,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
     [
         $o[0],
         $o[1],
+        $o[2],
     ],
     []
 ); }];

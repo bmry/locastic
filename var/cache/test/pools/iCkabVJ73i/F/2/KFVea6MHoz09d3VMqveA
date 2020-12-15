@@ -1,0 +1,79 @@
+<?php //App_Entity_VerificationRequest
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Serializer\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Mapping\\ClassMetadata')),
+        clone ($p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata')),
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'App\\Entity\\VerificationRequest',
+                'id',
+                'user',
+                'status',
+                'imagePath',
+                'image',
+                'rejectionReason',
+                'initiationMessage',
+                'createdAt',
+                'updatedAt',
+                'imageFile',
+            ],
+            'attributesMetadata' => [
+                [
+                    'id' => $o[1],
+                    'user' => $o[2],
+                    'status' => $o[3],
+                    'imagePath' => $o[4],
+                    'image' => $o[5],
+                    'rejectionReason' => $o[6],
+                    'initiationMessage' => $o[7],
+                    'createdAt' => $o[8],
+                    'updatedAt' => $o[9],
+                    'imageFile' => $o[10],
+                ],
+            ],
+            'groups' => [
+                2 => [
+                    'admin:read',
+                ],
+                [
+                    'user:read',
+                    'admin:read',
+                ],
+                [
+                    'user:read',
+                    'admin:read',
+                    'admin:write',
+                    'user:get:read',
+                ],
+                [
+                    'user:write',
+                ],
+                [
+                    'user:read',
+                    'admin:read',
+                    'admin:write',
+                ],
+                [
+                    'user:read',
+                    'user:write',
+                    'admin:read',
+                ],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

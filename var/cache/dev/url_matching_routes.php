@@ -41,19 +41,20 @@ return [
                     .'|(?:\\.([^/]++))?(?'
                         .'|(*:293)'
                     .')'
-                    .'|/([^/\\.]++)(?:\\.([^/]++))?(*:328)'
+                    .'|/([^/\\.]++)(?:\\.([^/]++))?(?'
+                        .'|(*:331)'
+                    .')'
                 .')'
                 .'|/verification_requests(?'
-                    .'|(?:\\.([^/]++))?(*:377)'
+                    .'|(?:\\.([^/]++))?(*:381)'
                     .'|/([^/]++)(?'
-                        .'|(*:397)'
+                        .'|(*:401)'
                         .'|/(?'
-                            .'|approve(*:416)'
-                            .'|decline(*:431)'
+                            .'|approve(*:420)'
+                            .'|decline(*:435)'
                         .')'
                     .')'
                 .')'
-                .'|/(*:443)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -71,16 +72,18 @@ return [
             [['_route' => 'api_blogs_get_collection', '_controller' => 'api_platform.action.get_collection', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_collection_operation_name' => 'get'], ['_format'], ['GET' => 0], null, false, true, null],
             [['_route' => 'api_blogs_post_collection', '_controller' => 'api_platform.action.post_collection', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_collection_operation_name' => 'post'], ['_format'], ['POST' => 0], null, false, true, null],
         ],
-        328 => [[['_route' => 'api_blogs_get_item', '_controller' => 'api_platform.action.get_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
-        377 => [[['_route' => 'api_verification_requests_get_collection', '_controller' => 'api_platform.action.get_collection', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_collection_operation_name' => 'get'], ['_format'], ['GET' => 0], null, false, true, null]],
-        397 => [
+        331 => [
+            [['_route' => 'api_blogs_get_item', '_controller' => 'api_platform.action.get_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'get'], ['id', '_format'], ['GET' => 0], null, false, true, null],
+            [['_route' => 'api_blogs_put_item', '_controller' => 'api_platform.action.put_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
+        ],
+        381 => [[['_route' => 'api_verification_requests_get_collection', '_controller' => 'api_platform.action.get_collection', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_collection_operation_name' => 'get'], ['_format'], ['GET' => 0], null, false, true, null]],
+        401 => [
             [['_route' => 'api_verification_requests_get_item', '_controller' => 'api_platform.action.get_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'get'], ['id'], ['GET' => 0], null, false, true, null],
             [['_route' => 'api_verification_requests_update_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\UpdateVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'update_verification_request'], ['id'], ['POST' => 0], null, false, true, null],
         ],
-        416 => [[['_route' => 'api_verification_requests_approve_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\ApproveVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'approve_verification_request'], ['id'], ['GET' => 0], null, false, false, null]],
-        431 => [[['_route' => 'api_verification_requests_decline_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\DeclineVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'decline_verification_request'], ['id'], ['POST' => 0], null, false, false, null]],
-        443 => [
-            [['_route' => 'index', '_controller' => 'App\\Controller\\HomeController::home'], [], null, null, false, false, null],
+        420 => [[['_route' => 'api_verification_requests_approve_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\ApproveVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'approve_verification_request'], ['id'], ['GET' => 0], null, false, false, null]],
+        435 => [
+            [['_route' => 'api_verification_requests_decline_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\DeclineVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'decline_verification_request'], ['id'], ['POST' => 0], null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],
     ],
