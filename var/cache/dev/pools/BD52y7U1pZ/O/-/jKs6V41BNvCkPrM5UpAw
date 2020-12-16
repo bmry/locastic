@@ -1,0 +1,58 @@
+<?php //%255BApp%255CEntity%255CUser%2524plainPassword%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Serializer\\Annotation\\Groups'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Annotation\\Groups')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotNull'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotNull')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
+        clone ($p['Symfony\\Component\\Serializer\\Annotation\\SerializedName'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Serializer\\Annotation\\SerializedName')),
+        clone ($p['Rollerworks\\Component\\PasswordStrength\\Validator\\Constraints\\PasswordStrength'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Rollerworks\\Component\\PasswordStrength\\Validator\\Constraints\\PasswordStrength')),
+    ],
+    null,
+    [
+        'Symfony\\Component\\Serializer\\Annotation\\Groups' => [
+            'groups' => [
+                [
+                    'write',
+                ],
+            ],
+        ],
+        'stdClass' => [
+            'message' => [
+                1 => 'Please provide password',
+                'Please provide password',
+                4 => 'Password must contain at least one lower, one uppercase alpha character, one digit,one special character and must be at least 7 character long',
+            ],
+            'groups' => [
+                1 => [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                4 => [
+                    'Default',
+                ],
+            ],
+            'minLength' => [
+                4 => 7,
+            ],
+            'minStrength' => [
+                4 => 4,
+            ],
+        ],
+        'Symfony\\Component\\Serializer\\Annotation\\SerializedName' => [
+            'serializedName' => [
+                3 => 'password',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+        $o[3],
+        $o[4],
+    ],
+    []
+); }];

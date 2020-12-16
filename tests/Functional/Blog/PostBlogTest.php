@@ -4,9 +4,11 @@ namespace App\Tests\Functional\Blog;
 
 
 use App\Tests\Functional\BaseTest;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class PostBlogTest extends BaseTest
 {
+    use RefreshDatabaseTrait;
 
     public function test_That_Unauthorized_Response_Is_Returned_If_Unauthenticated_User_Try_To_Post_Blog()
     {

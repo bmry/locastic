@@ -12,13 +12,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksPassword;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use  Symfony\Component\Serializer\Annotation\SerializedName;
 /**
  *
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}},
  *     denormalizationContext={"groups"={"write"}},
- *     itemOperations={},
+ *     itemOperations={
+        "get" ={"method"="GET"}
+ *     },
  *     collectionOperations={
  *      "register_user"={
  *         "method"="POST",
@@ -73,17 +75,22 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @Groups({"read", "write"})
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
+    /**
+     * @Groups({"write"})
      * @Assert\NotNull(message="Please provide password")
      * @Assert\NotBlank(message="Please provide password")
+     * @SerializedName("password")
      * @RollerworksPassword\PasswordStrength(
      *     minLength=7,
      *     minStrength=4,
      *     message="Password must contain at least one lower, one uppercase alpha character, one digit,one special character and must be at least 7 character long"
      *     )
-     * @ORM\Column(type="string")
      */
-    private $password;
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="boolean")
@@ -284,6 +291,21 @@ class User implements UserInterface
         $this->profilePicture = $profilePicture;
 
         return $this;
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstName();
     }
 
 }

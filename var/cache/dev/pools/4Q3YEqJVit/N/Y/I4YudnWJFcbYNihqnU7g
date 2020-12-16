@@ -15,6 +15,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
         clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
         clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
         clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
+        clone $p['Symfony\\Component\\Serializer\\Mapping\\AttributeMetadata'],
     ],
     null,
     [
@@ -27,6 +28,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'lastName',
                 'roles',
                 'password',
+                'plainPassword',
                 'isVerified',
                 'verificationRequests',
                 'profilePicture',
@@ -42,12 +44,13 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'lastName' => $o[4],
                     'roles' => $o[5],
                     'password' => $o[6],
-                    'isVerified' => $o[7],
-                    'verificationRequests' => $o[8],
-                    'profilePicture' => $o[9],
-                    'username' => $o[10],
-                    'salt' => $o[11],
-                    'verified' => $o[12],
+                    'plainPassword' => $o[7],
+                    'isVerified' => $o[8],
+                    'verificationRequests' => $o[9],
+                    'profilePicture' => $o[10],
+                    'username' => $o[11],
+                    'salt' => $o[12],
+                    'verified' => $o[13],
                 ],
             ],
             'groups' => [
@@ -62,10 +65,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'write',
                 ],
-                6 => [
-                    'read',
+                7 => [
                     'write',
                 ],
+            ],
+            'serializedName' => [
+                7 => 'password',
             ],
         ],
     ],

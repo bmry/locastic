@@ -94,12 +94,42 @@ class BaseTest extends ApiTestCase
      * @return \App\Entity\VerificationRequest|null
      * @throws \Doctrine\ORM\ORMException
      */
-    public function getVerifiedRequestByStatus(string $status)
+    public function getVerifiedRequestByStatus(string $status, $ownByCurrentUser = true)
+    {
+
+        $verificationRequestRepo = self::$container->get(VerificationRequestRepository::class);
+        $parameter  = ['status' => $status];
+
+        if(true == $ownByCurrentUser){
+            $parameter['user'] = $this->currentTestUser;
+        }
+        return $verificationRequestRepo->findOneBy($parameter);
+
+    }
+
+    /**
+     * @param string $id
+     * @return \App\Entity\VerificationRequest|null
+     */
+    public function getVerifiedRequestById(string $id)
     {
 
         $verificationRequestRepo = self::$container->get(VerificationRequestRepository::class);
 
-        return $verificationRequestRepo->findOneBy(['status' => $status,'user' => $this->currentTestUser]);
+        return $verificationRequestRepo->findOneBy(['id' => $id]);
+
+    }
+
+    /**
+     * @param string $id
+     * @return \App\Entity\VerificationRequest|null
+     */
+    public function getVerifiedRequest(string $id)
+    {
+
+        $verificationRequestRepo = self::$container->get(VerificationRequestRepository::class);
+
+        return $verificationRequestRepo->findOneBy(['id' => $id]);
 
     }
 }

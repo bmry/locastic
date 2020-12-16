@@ -1,0 +1,98 @@
+App\Entity\User:
+    admin_user:
+        firstName: Toni
+        lastName: Locastic
+        email: admin@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER','ROLE_ADMIN']
+    verified_user:
+        firstName: Toni
+        lastName: Locastic
+        email: blogger@locastic.com
+        password: Sambam1955@@
+        roles: ['ROLE_USER','ROLE_BLOGGER']
+    verified_user_2:
+        firstName: Paula
+        lastName: Čučuk
+        email: blogger2@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER','ROLE_BLOGGER']
+    verified_user_3:
+        firstName: Paula
+        lastName: Čučuk
+        email: blogger3@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER','ROLE_BLOGGER']
+    unverified_user:
+        firstName: Morayo
+        lastName: Bamgbose
+        email: morayo@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER']
+    unverified_user_2:
+        firstName: Morayo
+        lastName: Bamgbose
+        email: mo@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER']
+    unverified_user_3:
+        firstName: Morayo
+        lastName: Bamgbose
+        email: mob@locastic.com
+        plainPassword: mobam1955@@
+        roles: ['ROLE_USER']
+    user_with_approved_vr:
+        firstName: Morayo
+        lastName: Bamgbose
+        email: user_with_approved_vr@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER']
+    user_with_declined_vr:
+        firstName: Morayo
+        lastName: Bamgbose
+        email: declined_user@locastic.com
+        plainPassword: Sambam1955@@
+        roles: ['ROLE_USER']
+
+App\Entity\Blog:
+    blog_1:
+        title: 'Blog Title'
+        content: 'Speeding Up Unit Testing'
+        user: "@verified_user"
+    blog_2:
+        title: 'Blog Title'
+        content: 'Speeding Up Unit Testing'
+        user: "@verified_user_2"
+
+App\Entity\VerificationRequest:
+    unverified_request_1:
+        status: "verification requested"
+        initiation_message: "Please review me"
+        image_path: "Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png"
+        user: "@unverified_user"
+    unverified_request_2:
+        status: "verification requested"
+        initiation_message: "Please review me"
+        image_path: "Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png"
+        user: "@unverified_user_2"
+    approved_verified_request:
+        status: "approved"
+        initiation_message: "Please review me"
+        image_path: "Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png"
+        user: "@verified_user"
+    approved_verified_request_2:
+        status: "approved"
+        initiation_message: "Please review me"
+        image_path: "Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png"
+        user: "@verified_user_2"
+    approved_verified_request_3:
+        status: "approved"
+        initiation_message: "Please review me"
+        image_path: "Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png"
+        user: "@user_with_approved_vr"
+    declined_verified_request_3:
+        status: "declined"
+        initiation_message: "Please review me"
+        rejection_reason: "Please review me"
+        image_path: "Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png"
+        user: "@user_with_declined_vr"

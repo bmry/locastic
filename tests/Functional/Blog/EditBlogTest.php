@@ -9,6 +9,7 @@ use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class EditBlogTest extends BaseTest
 {
+    use RefreshDatabaseTrait;
 
     public function test_That_Bad_Request_Response_Is_Returned_If_VerifiedUser_Post_Blog_Without_Title()
     {

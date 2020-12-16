@@ -2,24 +2,14 @@
 
 namespace App\Tests\Functional\VerificationRequest;
 
-
-use App\Exception\ImageUploadException;
-use App\Exception\VerificationRequest\DuplicateVerificationRequestException;
 use App\Tests\Functional\BaseTest;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class InitiateVerificationRequestTest extends BaseTest
 {
 
     public function test_That_Success_Response_Is_Returned_If_Unverified_User_Initiates_Verification_Request()
     {
-
-        $uploadedFile = new UploadedFile(
-            __DIR__.'/upload/splash.png',
-            'splash.png'
-        );
-
-        $user = 'morayo@locastic.com';
+        $user = 'mob@locastic.com';
         $bearerToken = $this->getUserToken($user);
 
         $response = $this->client->request('POST', '/verification_requests/initiate',
@@ -29,7 +19,7 @@ class InitiateVerificationRequestTest extends BaseTest
                 ],
                 'json' => [
                     'image_string' => $this->encodeFile(__DIR__.'/upload/splash.png'),
-                    'initiation_message' => "Blog Title" ]
+                    'initiation_message' => "First Verification Request" ]
             ]
 
         );
@@ -41,12 +31,7 @@ class InitiateVerificationRequestTest extends BaseTest
 
     public function test_That_Unverified_User_Is_Not_Allowed_To_Make_Duplicate_Verification_Request()
     {
-        $uploadedFile = new UploadedFile(
-            __DIR__.'/upload/splash.png',
-            'splash.png'
-        );
-
-        $user = 'morayo@locastic.com';
+        $user = 'mob@locastic.com';
         $bearerToken = $this->getUserToken($user);
 
         $response = $this->client->request('POST', '/verification_requests/initiate',
@@ -67,12 +52,7 @@ class InitiateVerificationRequestTest extends BaseTest
 
     public function test_That_Verified_User_Is_Not_Allowed_To_Make_Verification_Request()
     {
-        $uploadedFile = new UploadedFile(
-            __DIR__.'/upload/splash.png',
-            'splash.png'
-        );
-
-        $user = 'blogger@locastic.com';
+        $user = 'blogger3@locastic.com';
         $bearerToken = $this->getUserToken($user);
 
         $response = $this->client->request('POST', '/verification_requests/initiate',
@@ -93,11 +73,6 @@ class InitiateVerificationRequestTest extends BaseTest
 
     public function test_That_Unverified_User_Cannot_Initiate_Verification_Request_Without_Image()
     {
-        $uploadedFile = new UploadedFile(
-            __DIR__.'/upload/splash.png',
-            'splash.png'
-        );
-
         $user = 'morayo@locastic.com';
         $bearerToken = $this->getUserToken($user);
 

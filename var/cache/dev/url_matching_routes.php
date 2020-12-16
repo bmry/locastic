@@ -45,13 +45,14 @@ return [
                         .'|(*:331)'
                     .')'
                 .')'
+                .'|/users/([^/\\.]++)(?:\\.([^/]++))?(*:373)'
                 .'|/verification_requests(?'
-                    .'|(?:\\.([^/]++))?(*:381)'
+                    .'|(?:\\.([^/]++))?(*:421)'
                     .'|/([^/]++)(?'
-                        .'|(*:401)'
+                        .'|(*:441)'
                         .'|/(?'
-                            .'|approve(*:420)'
-                            .'|decline(*:435)'
+                            .'|approve(*:460)'
+                            .'|decline(*:475)'
                         .')'
                     .')'
                 .')'
@@ -76,13 +77,14 @@ return [
             [['_route' => 'api_blogs_get_item', '_controller' => 'api_platform.action.get_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'get'], ['id', '_format'], ['GET' => 0], null, false, true, null],
             [['_route' => 'api_blogs_put_item', '_controller' => 'api_platform.action.put_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\Blog', '_api_item_operation_name' => 'put'], ['id', '_format'], ['PUT' => 0], null, false, true, null],
         ],
-        381 => [[['_route' => 'api_verification_requests_get_collection', '_controller' => 'api_platform.action.get_collection', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_collection_operation_name' => 'get'], ['_format'], ['GET' => 0], null, false, true, null]],
-        401 => [
+        373 => [[['_route' => 'api_users_get_item', '_controller' => 'api_platform.action.get_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\User', '_api_item_operation_name' => 'get'], ['id', '_format'], ['GET' => 0], null, false, true, null]],
+        421 => [[['_route' => 'api_verification_requests_get_collection', '_controller' => 'api_platform.action.get_collection', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_collection_operation_name' => 'get'], ['_format'], ['GET' => 0], null, false, true, null]],
+        441 => [
             [['_route' => 'api_verification_requests_get_item', '_controller' => 'api_platform.action.get_item', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'get'], ['id'], ['GET' => 0], null, false, true, null],
             [['_route' => 'api_verification_requests_update_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\UpdateVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'update_verification_request'], ['id'], ['PUT' => 0], null, false, true, null],
         ],
-        420 => [[['_route' => 'api_verification_requests_approve_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\ApproveVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'approve_verification_request'], ['id'], ['GET' => 0], null, false, false, null]],
-        435 => [
+        460 => [[['_route' => 'api_verification_requests_approve_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\ApproveVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'approve_verification_request'], ['id'], ['GET' => 0], null, false, false, null]],
+        475 => [
             [['_route' => 'api_verification_requests_decline_verification_request_item', '_controller' => 'App\\Controller\\Locastic\\VerificationRequest\\DeclineVerificationRequestAction', '_format' => null, '_api_resource_class' => 'App\\Entity\\VerificationRequest', '_api_item_operation_name' => 'decline_verification_request'], ['id'], ['POST' => 0], null, false, false, null],
             [null, null, null, null, false, false, 0],
         ],

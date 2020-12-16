@@ -49,7 +49,7 @@ class RegistrationSubscriber implements EventSubscriberInterface
     {
         $user = $userRegistrationEvent->getUser();
         $this->registrationValidator->validateRegistration($user);
-        $plainPassword = $user->getPassword();
+        $plainPassword = $user->getPlainPassword();
         $user->setPassword(
             $this->passwordEncoder->encodePassword(
                 $user,

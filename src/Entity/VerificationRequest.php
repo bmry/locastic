@@ -45,6 +45,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "deserialize"=false,
  *          "path"="/verification_requests/{id}/approve",
  *          "method"="GET",
+ *          "security"="is_granted('ROLE_ADMIN')",
  *          "openapi_context"={
  *                  "parameters"={
  *                      {"in"="path", "name"="id", "type"="integer", "required"="true"},
@@ -58,6 +59,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "deserialize"=false,
  *          "path"="/verification_requests/{id}/decline",
  *          "method"="POST",
+ *          "security"="is_granted('ROLE_ADMIN')",
  *          "openapi_context"={
  *                  "parameters"={
  *                      {"in"="path", "name"="id", "type"="integer", "required"="true"}
@@ -69,7 +71,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         "get"={
  *              "method"="GET",
  *             "normalization_context"={"groups"={"admin:read"}},
- *             "denormalization_context"={"groups"={"admin:write"}}
+ *             "denormalization_context"={"groups"={"admin:write"}},
+ *             "security"="is_granted('ROLE_ADMIN')"
  *      },
  *         "initiate_verification"={
  *             "controller"="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction",
@@ -225,4 +228,5 @@ class VerificationRequest
 
         return $this;
     }
+
 }

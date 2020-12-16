@@ -83,7 +83,6 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
             throw new VerificationOperationDeniedException();
         }
 
-
         if($verificationRequest->imageString){
             $imageString = $verificationRequest->imageString;
             $imageFile = $this->base64StringToImageConverter->buildUploadFileFromBase64String($imageString);

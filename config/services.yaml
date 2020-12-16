@@ -46,3 +46,8 @@ services:
 
     App\DataPersister\BlogDataPersister:
       decorates: 'api_platform.doctrine.orm.data_persister'
+
+    App\EventSubscriber\HashPasswordSubscriber:
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }

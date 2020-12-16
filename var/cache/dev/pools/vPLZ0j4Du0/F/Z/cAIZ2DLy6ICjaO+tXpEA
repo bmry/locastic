@@ -14,7 +14,35 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 '',
             ],
             'itemOperations' => [
-                [],
+                [
+                    'get' => [
+                        'method' => 'GET',
+                        'input' => null,
+                        'output' => null,
+                        'input_formats' => [
+                            'jsonld' => [
+                                'application/ld+json',
+                            ],
+                            'json' => [
+                                'application/json',
+                            ],
+                            'html' => [
+                                'text/html',
+                            ],
+                        ],
+                        'output_formats' => [
+                            'jsonld' => [
+                                'application/ld+json',
+                            ],
+                            'json' => [
+                                'application/json',
+                            ],
+                            'html' => [
+                                'text/html',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'collectionOperations' => [
                 [

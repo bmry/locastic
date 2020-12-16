@@ -25,7 +25,21 @@ class VerificationRequestFixture extends Fixture implements DependentFixtureInte
 
         $verificationRequest = new VerificationRequest();
         $verificationRequest->setUser($this->getReference('unverified_user'));
+        $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_VERIFICATION_REQUESTED);
+        $verificationRequest->setInitiationMessage('Please verify me');
+        $verificationRequest->setImagePath('Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png');
+        $manager->persist($verificationRequest);
+
+        $verificationRequest = new VerificationRequest();
+        $verificationRequest->setUser($this->getReference('unverified_user'));
         $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_APPROVED);
+        $verificationRequest->setInitiationMessage('Please verify me');
+        $verificationRequest->setImagePath('Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png');
+        $manager->persist($verificationRequest);
+
+        $verificationRequest = new VerificationRequest();
+        $verificationRequest->setUser($this->getReference('unverified_user'));
+        $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_DECLINED);
         $verificationRequest->setInitiationMessage('Please verify me');
         $verificationRequest->setImagePath('Screen-Shot-2020-12-02-at-9-53-53-AM-5fd630149f854.png');
         $manager->persist($verificationRequest);

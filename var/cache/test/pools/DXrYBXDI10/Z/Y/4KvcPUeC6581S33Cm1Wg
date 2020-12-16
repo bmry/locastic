@@ -118,6 +118,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'deserialize' => false,
                         'path' => '/verification_requests/{id}/approve',
                         'method' => 'GET',
+                        'security' => 'is_granted(\'ROLE_ADMIN\')',
                         'openapi_context' => [
                             'parameters' => [
                                 [
@@ -168,6 +169,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'deserialize' => false,
                         'path' => '/verification_requests/{id}/decline',
                         'method' => 'POST',
+                        'security' => 'is_granted(\'ROLE_ADMIN\')',
                         'openapi_context' => [
                             'parameters' => [
                                 [
@@ -219,6 +221,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                                 'admin:write',
                             ],
                         ],
+                        'security' => 'is_granted(\'ROLE_ADMIN\')',
                         'input' => null,
                         'output' => null,
                         'input_formats' => [

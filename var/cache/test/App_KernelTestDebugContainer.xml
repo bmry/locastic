@@ -27,6 +27,8 @@
       <parameter key="NelmioAliceBundle">Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle</parameter>
       <parameter key="FidryAliceDataFixturesBundle">Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle</parameter>
       <parameter key="HautelookAliceBundle">Hautelook\AliceBundle\HautelookAliceBundle</parameter>
+      <parameter key="SwiftmailerBundle">Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle</parameter>
+      <parameter key="DAMADoctrineTestBundle">DAMA\DoctrineTestBundle\DAMADoctrineTestBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -108,6 +110,14 @@
       <parameter key="HautelookAliceBundle" type="collection">
         <parameter key="path">/var/www/app/vendor/hautelook/alice-bundle/src</parameter>
         <parameter key="namespace">Hautelook\AliceBundle</parameter>
+      </parameter>
+      <parameter key="SwiftmailerBundle" type="collection">
+        <parameter key="path">/var/www/app/vendor/symfony/swiftmailer-bundle</parameter>
+        <parameter key="namespace">Symfony\Bundle\SwiftmailerBundle</parameter>
+      </parameter>
+      <parameter key="DAMADoctrineTestBundle" type="collection">
+        <parameter key="path">/var/www/app/vendor/dama/doctrine-test-bundle/src/DAMA/DoctrineTestBundle</parameter>
+        <parameter key="namespace">DAMA\DoctrineTestBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -484,6 +494,29 @@
     <parameter key="hautelook_alice.root_dirs" type="collection">
       <parameter>/var/www/app</parameter>
     </parameter>
+    <parameter key="swiftmailer.mailer.default.transport.name" type="string">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.encryption">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.port">25</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.host">localhost</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.username">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.password">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.auth_mode">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.timeout">30</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.source_ip">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.local_domain">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.stream_options" type="collection"/>
+    <parameter key="swiftmailer.spool.default.memory.path">/var/www/app/var/cache/test/swiftmailer/spool/default</parameter>
+    <parameter key="swiftmailer.mailer.default.spool.enabled">true</parameter>
+    <parameter key="swiftmailer.mailer.default.plugin.impersonate">null</parameter>
+    <parameter key="swiftmailer.mailer.default.single_address">null</parameter>
+    <parameter key="swiftmailer.mailer.default.delivery.enabled">false</parameter>
+    <parameter key="swiftmailer.spool.enabled">true</parameter>
+    <parameter key="swiftmailer.delivery.enabled">false</parameter>
+    <parameter key="swiftmailer.single_address">null</parameter>
+    <parameter key="swiftmailer.mailers" type="collection">
+      <parameter key="default">swiftmailer.mailer.default</parameter>
+    </parameter>
+    <parameter key="swiftmailer.default_mailer">default</parameter>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.request" type="collection">
         <parameter>request</parameter>
@@ -552,6 +585,10 @@
       <parameter key="data_collector.doctrine" type="collection">
         <parameter>db</parameter>
         <parameter>@Doctrine/Collector/db.html.twig</parameter>
+      </parameter>
+      <parameter key="swiftmailer.data_collector" type="collection">
+        <parameter>swiftmailer</parameter>
+        <parameter>@Swiftmailer/Collector/swiftmailer.html.twig</parameter>
       </parameter>
       <parameter key="data_collector.dump" type="collection">
         <parameter>dump</parameter>
@@ -632,6 +669,10 @@
       <argument type="service" id="App\Service\LocasticMailer"/>
       <argument type="service" id="monolog.logger"/>
     </service>
+    <service id="App\EventSubscriber\HashPasswordSubscriber" class="App\EventSubscriber\HashPasswordSubscriber" autowire="true" autoconfigure="true">
+      <tag name="doctrine.event_subscriber"/>
+      <argument type="service" id="security.user_password_encoder.generic"/>
+    </service>
     <service id="App\EventSubscriber\InitiateVerificationRequestSubscriber" class="App\EventSubscriber\InitiateVerificationRequestSubscriber" autowire="true" autoconfigure="true">
       <tag name="kernel.event_subscriber"/>
       <argument type="service" id="App\Service\FileUploader"/>
@@ -687,7 +728,8 @@
     <service id="App\Service\LocasticMailer" class="App\Service\LocasticMailer" autowire="true" autoconfigure="true">
       <argument type="service" id="parameter_bag"/>
       <argument type="service" id="router.default"/>
-      <argument type="service" id="mailer.mailer"/>
+      <argument type="service" id="swiftmailer.mailer.default"/>
+      <argument type="service" id="twig"/>
     </service>
     <service id="App\Swagger\SwaggerDecorator" class="App\Swagger\SwaggerDecorator" autowire="true">
       <argument type="service" id="App\Swagger\SwaggerDecorator.inner"/>
@@ -813,6 +855,7 @@
         <argument key="api_platform.cache.subresource_operation_factory" type="service" id="api_platform.cache.subresource_operation_factory" on-invalid="ignore_uninitialized"/>
         <argument key="api_platform.cache.metadata.resource" type="service" id="api_platform.cache.metadata.resource" on-invalid="ignore_uninitialized"/>
         <argument key="api_platform.cache.metadata.property" type="service" id="api_platform.cache.metadata.property" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.email_sender.listener" type="service" id="swiftmailer.email_sender.listener" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
         <argument key="cache.app" type="collection">
@@ -877,6 +920,9 @@
           <argument>reset</argument>
         </argument>
         <argument key="api_platform.cache.metadata.property" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="swiftmailer.email_sender.listener" type="collection">
           <argument>reset</argument>
         </argument>
       </argument>
@@ -1472,6 +1518,7 @@
         <argument key="App\DataPersister\BlogDataPersister.inner" type="service" id="App\DataPersister\BlogDataPersister.inner" on-invalid="ignore_uninitialized"/>
         <argument key="App\EventSubscriber\ApproveVerificationRequestSubscriber" type="service" id="App\EventSubscriber\ApproveVerificationRequestSubscriber" on-invalid="ignore_uninitialized"/>
         <argument key="App\EventSubscriber\DeclineVerificationRequestSubscriber" type="service" id="App\EventSubscriber\DeclineVerificationRequestSubscriber" on-invalid="ignore_uninitialized"/>
+        <argument key="App\EventSubscriber\HashPasswordSubscriber" type="service" id="App\EventSubscriber\HashPasswordSubscriber" on-invalid="ignore_uninitialized"/>
         <argument key="App\EventSubscriber\InitiateVerificationRequestSubscriber" type="service" id="App\EventSubscriber\InitiateVerificationRequestSubscriber" on-invalid="ignore_uninitialized"/>
         <argument key="App\EventSubscriber\RegistrationSubscriber" type="service" id="App\EventSubscriber\RegistrationSubscriber" on-invalid="ignore_uninitialized"/>
         <argument key="App\EventSubscriber\VerificationRequestUpdateSubscriber" type="service" id="App\EventSubscriber\VerificationRequestUpdateSubscriber" on-invalid="ignore_uninitialized"/>
@@ -1530,6 +1577,9 @@
         <argument key="Psr\Log\LoggerInterface $securityLogger" type="service" id="monolog.logger.security" on-invalid="ignore_uninitialized"/>
         <argument key="Psr\Log\LoggerInterface $translationLogger" type="service" id="monolog.logger.translation" on-invalid="ignore_uninitialized"/>
         <argument key="SessionHandlerInterface" type="service" id="session.handler.native_file" on-invalid="ignore_uninitialized"/>
+        <argument key="Swift_Mailer" type="service" id="swiftmailer.mailer.default" on-invalid="ignore_uninitialized"/>
+        <argument key="Swift_Spool" type="service" id="swiftmailer.mailer.default.spool.memory" on-invalid="ignore_uninitialized"/>
+        <argument key="Swift_Transport" type="service" id="swiftmailer.mailer.default.transport.spool" on-invalid="ignore_uninitialized"/>
         <argument key="SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface" type="service" id="symfonycasts.verify_email.helper" on-invalid="ignore_uninitialized"/>
         <argument key="Symfony\Component\Asset\Packages" type="service" id="assets.packages" on-invalid="ignore_uninitialized"/>
         <argument key="Symfony\Component\Cache\Adapter\AdapterInterface" type="service" id="cache.app" on-invalid="ignore_uninitialized"/>
@@ -1879,6 +1929,8 @@
         <argument key="container.env_var_processor" type="service" id="container.env_var_processor" on-invalid="ignore_uninitialized"/>
         <argument key="container.getenv" type="service" id="container.getenv" on-invalid="ignore_uninitialized"/>
         <argument key="controller_resolver" type="service" id="debug.controller_resolver" on-invalid="ignore_uninitialized"/>
+        <argument key="dama.doctrine.dbal.connection_factory" type="service" id="dama.doctrine.dbal.connection_factory" on-invalid="ignore_uninitialized"/>
+        <argument key="dama.doctrine.dbal.connection_factory.inner" type="service" id="dama.doctrine.dbal.connection_factory.inner" on-invalid="ignore_uninitialized"/>
         <argument key="data_collector.ajax" type="service" id="data_collector.ajax" on-invalid="ignore_uninitialized"/>
         <argument key="data_collector.cache" type="service" id="data_collector.cache" on-invalid="ignore_uninitialized"/>
         <argument key="data_collector.config" type="service" id="data_collector.config" on-invalid="ignore_uninitialized"/>
@@ -1953,7 +2005,7 @@
         <argument key="doctrine.database_create_command" type="service" id="doctrine.database_create_command" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.database_drop_command" type="service" id="doctrine.database_drop_command" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.database_import_command" type="service" id="doctrine.database_import_command" on-invalid="ignore_uninitialized"/>
-        <argument key="doctrine.dbal.connection_factory" type="service" id="doctrine.dbal.connection_factory" on-invalid="ignore_uninitialized"/>
+        <argument key="doctrine.dbal.connection_factory" type="service" id="dama.doctrine.dbal.connection_factory" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.dbal.default_connection.configuration" type="service" id="doctrine.dbal.default_connection.configuration" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.dbal.default_connection.event_manager" type="service" id="doctrine.dbal.default_connection.event_manager" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.dbal.event_manager" type="service" id="doctrine.dbal.default_connection.event_manager" on-invalid="ignore_uninitialized"/>
@@ -1986,9 +2038,9 @@
         <argument key="doctrine.orm.default_entity_manager.validator_loader" type="service" id="doctrine.orm.default_entity_manager.validator_loader" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service" id="doctrine.orm.default_listeners.attach_entity_listeners" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.orm.default_manager_configurator" type="service" id="doctrine.orm.default_manager_configurator" on-invalid="ignore_uninitialized"/>
-        <argument key="doctrine.orm.default_metadata_cache" type="service" id="doctrine.orm.cache.provider.cache.doctrine.orm.default.metadata" on-invalid="ignore_uninitialized"/>
+        <argument key="doctrine.orm.default_metadata_cache" type="service" id="doctrine.orm.default_metadata_cache" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.orm.default_metadata_driver" type="service" id="doctrine.orm.default_metadata_driver" on-invalid="ignore_uninitialized"/>
-        <argument key="doctrine.orm.default_query_cache" type="service" id="doctrine.orm.cache.provider.cache.doctrine.orm.default.query" on-invalid="ignore_uninitialized"/>
+        <argument key="doctrine.orm.default_query_cache" type="service" id="doctrine.orm.default_query_cache" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.orm.default_result_cache" type="service" id="doctrine.orm.cache.provider.cache.doctrine.orm.default.result" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" on-invalid="ignore_uninitialized"/>
         <argument key="doctrine.orm.listeners.resolve_target_entity" type="service" id="doctrine.orm.listeners.resolve_target_entity" on-invalid="ignore_uninitialized"/>
@@ -2098,7 +2150,6 @@
         <argument key="locale_aware_listener" type="service" id="locale_aware_listener" on-invalid="ignore_uninitialized"/>
         <argument key="locale_listener" type="service" id="locale_listener" on-invalid="ignore_uninitialized"/>
         <argument key="logger" type="service" id="monolog.logger" on-invalid="ignore_uninitialized"/>
-        <argument key="mailer" type="service" id="mailer.mailer" on-invalid="ignore_uninitialized"/>
         <argument key="mailer.data_collector" type="service" id="mailer.data_collector" on-invalid="ignore_uninitialized"/>
         <argument key="mailer.default_transport" type="service" id="mailer.default_transport" on-invalid="ignore_uninitialized"/>
         <argument key="mailer.envelope_listener" type="service" id="mailer.envelope_listener" on-invalid="ignore_uninitialized"/>
@@ -2449,6 +2500,23 @@
         <argument key="stof_doctrine_extensions.listener.blameable" type="service" id="stof_doctrine_extensions.listener.blameable" on-invalid="ignore_uninitialized"/>
         <argument key="stof_doctrine_extensions.listener.timestampable" type="service" id="stof_doctrine_extensions.listener.timestampable" on-invalid="ignore_uninitialized"/>
         <argument key="streamed_response_listener" type="service" id="streamed_response_listener" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.command.debug" type="service" id="swiftmailer.command.debug" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.command.new_email" type="service" id="swiftmailer.command.new_email" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.command.send_email" type="service" id="swiftmailer.command.send_email" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.data_collector" type="service" id="swiftmailer.data_collector" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.email_sender.listener" type="service" id="swiftmailer.email_sender.listener" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer" type="service" id="swiftmailer.mailer.default" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer.default.spool" type="service" id="swiftmailer.mailer.default.spool.memory" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer.default.spool.memory" type="service" id="swiftmailer.mailer.default.spool.memory" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer.default.transport" type="service" id="swiftmailer.mailer.default.transport.spool" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer.default.transport.eventdispatcher" type="service" id="swiftmailer.mailer.default.transport.eventdispatcher" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer.default.transport.null" type="service" id="swiftmailer.mailer.default.transport.null" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.mailer.default.transport.spool" type="service" id="swiftmailer.mailer.default.transport.spool" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.plugin.messagelogger" type="service" id="swiftmailer.mailer.default.plugin.messagelogger" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.spool" type="service" id="swiftmailer.mailer.default.spool.memory" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.transport.failover" type="service" id="swiftmailer.transport.failover" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.transport.real" type="service" id="swiftmailer.mailer.default.transport.null" on-invalid="ignore_uninitialized"/>
+        <argument key="swiftmailer.transport.replacementfactory" type="service" id="swiftmailer.transport.replacementfactory" on-invalid="ignore_uninitialized"/>
         <argument key="symfonycasts.verify_email.helper" type="service" id="symfonycasts.verify_email.helper" on-invalid="ignore_uninitialized"/>
         <argument key="symfonycasts.verify_email.query_utility" type="service" id="symfonycasts.verify_email.query_utility" on-invalid="ignore_uninitialized"/>
         <argument key="symfonycasts.verify_email.token_generator" type="service" id="symfonycasts.verify_email.token_generator" on-invalid="ignore_uninitialized"/>
@@ -3390,6 +3458,8 @@
           <argument>/var/www/app/vendor/nelmio/alice/src/Bridge/Symfony/translations</argument>
           <argument>/var/www/app/vendor/theofidry/alice-data-fixtures/src/Bridge/Symfony/translations</argument>
           <argument>/var/www/app/vendor/hautelook/alice-bundle/src/translations</argument>
+          <argument>/var/www/app/vendor/symfony/swiftmailer-bundle/translations</argument>
+          <argument>/var/www/app/vendor/dama/doctrine-test-bundle/src/DAMA/DoctrineTestBundle/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
           <argument key="scanned_directories" type="collection">
@@ -3417,6 +3487,8 @@
             <argument>vendor/nelmio/alice/src/Bridge/Symfony/translations</argument>
             <argument>vendor/theofidry/alice-data-fixtures/src/Bridge/Symfony/translations</argument>
             <argument>vendor/hautelook/alice-bundle/src/translations</argument>
+            <argument>vendor/symfony/swiftmailer-bundle/translations</argument>
+            <argument>vendor/dama/doctrine-test-bundle/src/DAMA/DoctrineTestBundle/translations</argument>
           </argument>
         </argument>
       </argument>
@@ -3679,6 +3751,9 @@
       </call>
       <call method="add">
         <argument type="service" id="data_collector.doctrine"/>
+      </call>
+      <call method="add">
+        <argument type="service" id="swiftmailer.data_collector"/>
       </call>
       <call method="add">
         <argument type="service" id="data_collector.dump"/>
@@ -4479,6 +4554,38 @@
         <argument>0</argument>
       </call>
       <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onException</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.terminate</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onTerminate</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.error</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onException</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.terminate</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onTerminate</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
         <argument>Symfony\Component\Security\Http\Event\LogoutEvent</argument>
         <argument type="collection">
           <argument type="service" id="security.logout.listener.csrf_token_clearing"/>
@@ -5081,6 +5188,14 @@
         <argument>!VichUploader</argument>
       </call>
       <call method="addPath">
+        <argument>/var/www/app/vendor/symfony/swiftmailer-bundle/Resources/views</argument>
+        <argument>Swiftmailer</argument>
+      </call>
+      <call method="addPath">
+        <argument>/var/www/app/vendor/symfony/swiftmailer-bundle/Resources/views</argument>
+        <argument>!Swiftmailer</argument>
+      </call>
+      <call method="addPath">
         <argument>/var/www/app/templates</argument>
       </call>
       <call method="addPath">
@@ -5308,11 +5423,8 @@
         <argument type="service" id="doctrine.dbal.logger.profiling.default"/>
       </call>
     </service>
-    <service id="doctrine.dbal.connection_factory" class="Doctrine\Bundle\DoctrineBundle\ConnectionFactory">
-      <argument>%doctrine.dbal.connection_factory.types%</argument>
-    </service>
     <service id="doctrine.dbal.connection" class="Doctrine\DBAL\Connection" abstract="true">
-      <factory service="doctrine.dbal.connection_factory" method="createConnection"/>
+      <factory service="dama.doctrine.dbal.connection_factory" method="createConnection"/>
     </service>
     <service id="doctrine.dbal.connection.event_manager" class="Symfony\Bridge\Doctrine\ContainerAwareEventManager" public="false" abstract="true">
       <argument type="service" id="service_container"/>
@@ -5383,6 +5495,9 @@
         <argument type="service" id="vich_uploader.listener.clean.media_object"/>
       </call>
       <call method="addEventSubscriber">
+        <argument type="service" id="App\EventSubscriber\HashPasswordSubscriber"/>
+      </call>
+      <call method="addEventSubscriber">
         <argument type="service" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </call>
       <call method="addEventSubscriber">
@@ -5420,13 +5535,15 @@
         <argument key="driver">pdo_mysql</argument>
         <argument key="driverOptions" type="collection"/>
         <argument key="defaultTableOptions" type="collection"/>
+        <argument key="dama.keep_static">true</argument>
+        <argument key="dama.connection_name">default</argument>
       </argument>
       <argument type="service" id="doctrine.dbal.default_connection.configuration"/>
       <argument type="service" id="doctrine.dbal.default_connection.event_manager"/>
       <argument type="collection">
         <argument key="enum">string</argument>
       </argument>
-      <factory service="doctrine.dbal.connection_factory" method="createConnection"/>
+      <factory service="dama.doctrine.dbal.connection_factory" method="createConnection"/>
     </service>
     <service id=".1_ServiceLocator~vwKMcBj" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <argument type="collection"/>
@@ -5594,10 +5711,10 @@
         </argument>
       </call>
       <call method="setMetadataCacheImpl">
-        <argument type="service" id="doctrine.orm.cache.provider.cache.doctrine.orm.default.metadata"/>
+        <argument type="service" id="doctrine.orm.default_metadata_cache"/>
       </call>
       <call method="setQueryCacheImpl">
-        <argument type="service" id="doctrine.orm.cache.provider.cache.doctrine.orm.default.query"/>
+        <argument type="service" id="doctrine.orm.default_query_cache"/>
       </call>
       <call method="setResultCacheImpl">
         <argument type="service" id="doctrine.orm.cache.provider.cache.doctrine.orm.default.result"/>
@@ -8448,6 +8565,89 @@
     <service id="hautelook_alice.resolver.file.kernel_file_resolver" class="Hautelook\AliceBundle\Resolver\File\KernelFileResolver">
       <argument type="service" id="kernel"/>
     </service>
+    <service id=".4_Swift_Transport_Esmtp_Auth_NTLMAuthenticator~tGaERXr" class="Swift_Transport_Esmtp_Auth_NTLMAuthenticator" public="false"/>
+    <service id=".3_Swift_Transport_Esmtp_Auth_PlainAuthenticator~tGaERXr" class="Swift_Transport_Esmtp_Auth_PlainAuthenticator" public="false"/>
+    <service id=".2_Swift_Transport_Esmtp_Auth_LoginAuthenticator~tGaERXr" class="Swift_Transport_Esmtp_Auth_LoginAuthenticator" public="false"/>
+    <service id=".1_Swift_Transport_Esmtp_Auth_CramMd5Authenticator~tGaERXr" class="Swift_Transport_Esmtp_Auth_CramMd5Authenticator" public="false"/>
+    <service id="swiftmailer.mailer.abstract" class="Swift_Mailer" public="true" abstract="true">
+      <argument type="service" id="swiftmailer.mailer.default.transport.spool"/>
+    </service>
+    <service id="swiftmailer.transport.smtp.configurator.abstract" class="Symfony\Bundle\SwiftmailerBundle\DependencyInjection\SmtpTransportConfigurator" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.sendmail.abstract" class="Swift_Transport_SendmailTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.null.abstract" class="Swift_Transport_NullTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.failover" class="Swift_Transport_FailoverTransport" public="false"/>
+    <service id="swiftmailer.transport.buffer.abstract" class="Swift_Transport_StreamBuffer" public="false" abstract="true">
+      <argument type="service" id="swiftmailer.transport.replacementfactory"/>
+    </service>
+    <service id="swiftmailer.transport.authhandler.abstract" class="Swift_Transport_Esmtp_AuthHandler" public="false" abstract="true">
+      <argument type="collection">
+        <argument type="service" id=".1_Swift_Transport_Esmtp_Auth_CramMd5Authenticator~tGaERXr"/>
+        <argument type="service" id=".2_Swift_Transport_Esmtp_Auth_LoginAuthenticator~tGaERXr"/>
+        <argument type="service" id=".3_Swift_Transport_Esmtp_Auth_PlainAuthenticator~tGaERXr"/>
+        <argument type="service" id=".4_Swift_Transport_Esmtp_Auth_NTLMAuthenticator~tGaERXr"/>
+      </argument>
+    </service>
+    <service id="swiftmailer.transport.eventdispatcher.abstract" class="Swift_Events_SimpleEventDispatcher" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.replacementfactory" class="Swift_StreamFilters_StringReplacementFilterFactory" public="false"/>
+    <service id="swiftmailer.plugin.redirecting.abstract" class="Swift_Plugins_RedirectingPlugin" public="false" abstract="true"/>
+    <service id="swiftmailer.plugin.antiflood.abstract" class="Swift_Plugins_AntiFloodPlugin" public="false" abstract="true"/>
+    <service id="swiftmailer.plugin.impersonate.abstract" class="Swift_Plugins_ImpersonatePlugin" public="false" abstract="true"/>
+    <service id="swiftmailer.plugin.messagelogger.abstract" class="Swift_Plugins_MessageLogger" abstract="true"/>
+    <service id="swiftmailer.transport.smtp.abstract" class="Swift_Transport_EsmtpTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.spool.abstract" class="Swift_Transport_SpoolTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.spool.file.abstract" class="Swift_FileSpool" public="false" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="swiftmailer.spool.memory.abstract" class="Swift_MemorySpool" public="false" abstract="true"/>
+    <service id="swiftmailer.email_sender.listener" class="Symfony\Bundle\SwiftmailerBundle\EventListener\EmailSenderListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="kernel.reset" method="reset"/>
+      <argument type="service" id="service_container"/>
+      <argument type="service" id="monolog.logger" on-invalid="null"/>
+    </service>
+    <service id="swiftmailer.data_collector" class="Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector" public="false">
+      <tag name="data_collector" template="@Swiftmailer/Collector/swiftmailer.html.twig" id="swiftmailer" priority="245"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="swiftmailer.command.debug" class="Symfony\Bundle\SwiftmailerBundle\Command\DebugCommand">
+      <tag name="console.command" command="debug:swiftmailer"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>debug:swiftmailer</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.command.new_email" class="Symfony\Bundle\SwiftmailerBundle\Command\NewEmailCommand">
+      <tag name="console.command" command="swiftmailer:email:send"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>swiftmailer:email:send</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.command.send_email" class="Symfony\Bundle\SwiftmailerBundle\Command\SendEmailCommand">
+      <tag name="console.command" command="swiftmailer:spool:send"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>swiftmailer:spool:send</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.mailer.default.transport.eventdispatcher" class="Swift_Events_SimpleEventDispatcher" public="false"/>
+    <service id="swiftmailer.mailer.default.transport.null" class="Swift_Transport_NullTransport" public="false">
+      <argument type="service" id="swiftmailer.mailer.default.transport.eventdispatcher"/>
+    </service>
+    <service id="swiftmailer.mailer.default" class="Swift_Mailer" public="true">
+      <argument type="service" id="swiftmailer.mailer.default.transport.spool"/>
+    </service>
+    <service id="swiftmailer.mailer.default.spool.memory" class="Swift_MemorySpool" public="false"/>
+    <service id="swiftmailer.mailer.default.transport.spool" class="Swift_Transport_SpoolTransport" public="false">
+      <argument type="service" id="swiftmailer.mailer.default.transport.eventdispatcher"/>
+      <argument type="service" id="swiftmailer.mailer.default.spool.memory"/>
+      <call method="registerPlugin">
+        <argument type="service" id="swiftmailer.mailer.default.plugin.messagelogger"/>
+      </call>
+    </service>
+    <service id="swiftmailer.mailer.default.plugin.messagelogger" class="Swift_Plugins_MessageLogger" public="true">
+      <tag name="swiftmailer.default.plugin"/>
+    </service>
     <service id="annotated_app_entity_verification_request_api_platform_core_bridge_doctrine_orm_filter_order_filter" class="ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter" public="false" autowire="true">
       <tag name="api_platform.filter"/>
       <argument type="service" id="doctrine"/>
@@ -8828,6 +9028,19 @@
       <configurator class="Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\AddDebugLogProcessorPass" method="configureLogger"/>
     </service>
     <service id="monolog.handler.null_internal" class="Monolog\Handler\NullHandler"/>
+    <service id="dama.doctrine.dbal.connection_factory" class="DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticConnectionFactory">
+      <argument type="service" id="dama.doctrine.dbal.connection_factory.inner"/>
+    </service>
+    <service id="doctrine.orm.default_metadata_cache" class="DAMA\DoctrineTestBundle\Doctrine\Cache\StaticArrayCache">
+      <call method="setNamespace">
+        <argument>587f9c1a84a2c77aac3086fb62c7450374000626</argument>
+      </call>
+    </service>
+    <service id="doctrine.orm.default_query_cache" class="DAMA\DoctrineTestBundle\Doctrine\Cache\StaticArrayCache">
+      <call method="setNamespace">
+        <argument>a0340e49ab711cf406922588df061b847421a1bf</argument>
+      </call>
+    </service>
     <service id=".service_locator.6RweocE" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -9091,6 +9304,9 @@
       </call>
       <factory class="Symfony\Component\HttpClient\HttpClient" method="create"/>
     </service>
+    <service id="dama.doctrine.dbal.connection_factory.inner" class="Doctrine\Bundle\DoctrineBundle\ConnectionFactory" public="false">
+      <argument>%doctrine.dbal.connection_factory.types%</argument>
+    </service>
     <service id="api_platform.route_name_resolver.cached.inner" class="ApiPlatform\Core\Bridge\Symfony\Routing\RouteNameResolver" public="false">
       <argument type="service" id="api_platform.router"/>
     </service>
@@ -9108,7 +9324,7 @@
     <service id=".errored..service_locator.WVn.d1m.App\Entity\VerificationRequest" class="App\Entity\VerificationRequest"/>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.HIt7D1l"/>
+      <argument type="service" id=".service_locator.9u_NC_5"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -9181,9 +9397,12 @@
         <argument key="vich:mapping:debug">vich_uploader.command.mapping_debug</argument>
         <argument key="vich:mapping:list-classes">vich_uploader.command.mapping_list_classes</argument>
         <argument key="hautelook:fixtures:load">hautelook_alice.console.command.doctrine.doctrine_orm_load_data_fixtures_command</argument>
+        <argument key="debug:swiftmailer">swiftmailer.command.debug</argument>
+        <argument key="swiftmailer:email:send">swiftmailer.command.new_email</argument>
+        <argument key="swiftmailer:spool:send">swiftmailer.command.send_email</argument>
       </argument>
     </service>
-    <service id=".service_locator.HIt7D1l" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.9u_NC_5" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service" id="console.command.about"/>
@@ -9251,6 +9470,9 @@
         <argument key="lexik_jwt_authentication.generate_token_command" type="service" id="lexik_jwt_authentication.generate_token_command"/>
         <argument key="monolog.command.server_log" type="service" id="monolog.command.server_log"/>
         <argument key="security.command.user_password_encoder" type="service" id="security.command.user_password_encoder"/>
+        <argument key="swiftmailer.command.debug" type="service" id="swiftmailer.command.debug"/>
+        <argument key="swiftmailer.command.new_email" type="service" id="swiftmailer.command.new_email"/>
+        <argument key="swiftmailer.command.send_email" type="service" id="swiftmailer.command.send_email"/>
         <argument key="twig.command.debug" type="service" id="twig.command.debug"/>
         <argument key="twig.command.lint" type="service" id="twig.command.lint"/>
         <argument key="var_dumper.command.server_dump" type="service" id="var_dumper.command.server_dump"/>
@@ -9418,7 +9640,7 @@
     <service id="Symfony\Component\Asset\Packages" alias="assets.packages" public="false"/>
     <service id="Symfony\Contracts\HttpClient\HttpClientInterface" alias=".debug.http_client"/>
     <service id="Psr\Http\Client\ClientInterface" alias="psr18.http_client"/>
-    <service id="mailer" alias="mailer.mailer"/>
+    <service id="mailer" alias="swiftmailer.mailer.default" public="true"/>
     <service id="Symfony\Component\Mailer\MailerInterface" alias="mailer.mailer"/>
     <service id="Symfony\Component\Mailer\Transport\TransportInterface" alias="mailer.default_transport"/>
     <service id="Symfony\Component\Notifier\NotifierInterface" alias="notifier"/>
@@ -9473,9 +9695,7 @@
     <service id="Doctrine\ORM\EntityManagerInterface" alias="doctrine.orm.default_entity_manager" public="false"/>
     <service id="doctrine.orm.metadata.annotation_reader" alias="annotations.cached_reader" public="false"/>
     <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager" public="true"/>
-    <service id="doctrine.orm.default_metadata_cache" alias="doctrine.orm.cache.provider.cache.doctrine.orm.default.metadata" public="false"/>
     <service id="doctrine.orm.default_result_cache" alias="doctrine.orm.cache.provider.cache.doctrine.orm.default.result" public="false"/>
-    <service id="doctrine.orm.default_query_cache" alias="doctrine.orm.cache.provider.cache.doctrine.orm.default.query" public="false"/>
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager" public="false"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface" alias="security.authorization_checker" public="false"/>
@@ -9630,6 +9850,17 @@
     <service id="hautelook_alice.locator" alias="hautelook_alice.locator.environmentless" public="true"/>
     <service id="hautelook_alice.resolver.bundle" alias="hautelook_alice.resolver.bundle.no_bundle_resolver" public="true"/>
     <service id="hautelook_alice.resolver.file" alias="hautelook_alice.resolver.file.kernel_file_resolver" public="true"/>
+    <service id="swiftmailer.mailer.default.transport" alias="swiftmailer.mailer.default.transport.spool"/>
+    <service id="swiftmailer.mailer.default.spool" alias="swiftmailer.mailer.default.spool.memory"/>
+    <service id="swiftmailer.mailer.default.transport.real" alias="swiftmailer.mailer.default.transport.null" public="true"/>
+    <service id="swiftmailer.spool" alias="swiftmailer.mailer.default.spool.memory"/>
+    <service id="swiftmailer.transport.real" alias="swiftmailer.mailer.default.transport.null"/>
+    <service id="Swift_Spool" alias="swiftmailer.mailer.default.spool.memory" public="false"/>
+    <service id="swiftmailer.plugin.messagelogger" alias="swiftmailer.mailer.default.plugin.messagelogger"/>
+    <service id="swiftmailer.mailer" alias="swiftmailer.mailer.default"/>
+    <service id="swiftmailer.transport" alias="swiftmailer.mailer.default.transport.spool" public="true"/>
+    <service id="Swift_Mailer" alias="swiftmailer.mailer.default" public="false"/>
+    <service id="Swift_Transport" alias="swiftmailer.mailer.default.transport.spool" public="false"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.WaGDpDt" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="argument_resolver.controller_locator" alias=".service_locator.ce33EhB"/>
@@ -9699,6 +9930,7 @@
     <service id="argument_resolver.variadic" alias="debug.argument_resolver.variadic" public="false"/>
     <service id="argument_resolver.not_tagged_controller" alias="debug.argument_resolver.not_tagged_controller" public="false"/>
     <service id="http_client" alias=".debug.http_client"/>
+    <service id="doctrine.dbal.connection_factory" alias="dama.doctrine.dbal.connection_factory"/>
     <service id="api_platform.swagger.normalizer.api_gateway.inner" alias="App\Swagger\SwaggerDecorator" public="false"/>
     <service id="api_platform.route_name_resolver" alias="api_platform.route_name_resolver.cached" public="false"/>
     <service id="api_platform.subresource_operation_factory" alias="api_platform.subresource_operation_factory.cached" public="false"/>
