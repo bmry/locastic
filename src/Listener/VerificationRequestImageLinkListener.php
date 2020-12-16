@@ -33,8 +33,8 @@ class VerificationRequestImageLinkListener
 
         if($entity instanceof VerificationRequest){
 
-                $entity->setImagePath(
-                    $this->request->getSchemeAndHttpHost() . FileUploader::UPLOAD_DIR . $entity->getImagePath());
+//                $entity->setImagePath(
+//                    $this->request->getSchemeAndHttpHost() . FileUploader::UPLOAD_DIR . $entity->getImagePath());
         }
     }
 }

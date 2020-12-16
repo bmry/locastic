@@ -23,12 +23,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 'user',
                 'status',
                 'imagePath',
-                'image',
+                'imageString',
+                'imageFile',
                 'rejectionReason',
                 'initiationMessage',
                 'createdAt',
                 'updatedAt',
-                'imageFile',
             ],
             'attributesMetadata' => [
                 [
@@ -36,12 +36,12 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'user' => $o[2],
                     'status' => $o[3],
                     'imagePath' => $o[4],
-                    'image' => $o[5],
-                    'rejectionReason' => $o[6],
-                    'initiationMessage' => $o[7],
-                    'createdAt' => $o[8],
-                    'updatedAt' => $o[9],
-                    'imageFile' => $o[10],
+                    'imageString' => $o[5],
+                    'imageFile' => $o[6],
+                    'rejectionReason' => $o[7],
+                    'initiationMessage' => $o[8],
+                    'createdAt' => $o[9],
+                    'updatedAt' => $o[10],
                 ],
             ],
             'groups' => [
@@ -61,7 +61,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                 [
                     'user:write',
                 ],
-                [
+                7 => [
                     'user:read',
                     'admin:read',
                     'admin:write',

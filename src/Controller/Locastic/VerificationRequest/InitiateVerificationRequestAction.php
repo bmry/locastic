@@ -7,11 +7,16 @@ use App\Entity\VerificationRequest;
 use App\Event\VerificationRequest\InitiateVerificationRequestEvent;
 use App\Exception\VerificationRequest\VerificationRequestException;
 use App\Repository\VerificationRequestRepository;
+use App\Service\Base64StringToImageCoverter;
+use App\Service\FileUploader;
 use App\Validation\VerificationRequest\InitiateVerificationRequestValidator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -26,29 +31,32 @@ class InitiateVerificationRequestAction
      * @param Security $security
      * @param LoggerInterface $logger
      * @param VerificationRequestRepository $verificationRequestRepository
+     * @param InitiateVerificationRequestValidator $verificationRequestValidator
+     * @param Base64StringToImageCoverter $base64StringToImageCoverter
      * @return VerificationRequest|JsonResponse
+     * @throws \App\Exception\ImageUploadException
      */
     public function __invoke(
-        Request $request,
+        VerificationRequest $data,
         EventDispatcherInterface $eventDispatcher,
         Security $security,
         LoggerInterface $logger,
         VerificationRequestRepository $verificationRequestRepository,
-        InitiateVerificationRequestValidator $verificationRequestValidator
+        InitiateVerificationRequestValidator $verificationRequestValidator,
+        Base64StringToImageCoverter $base64StringToImageCoverter
     )
     {
         try {
-            $verificationRequestValidator->validate();
-            $imageFile = $request->files->get('image');
-            $initiationMessage = $request->request->get('initiation_message');
-            $verificationRequest = new VerificationRequest();
-            $verificationRequest->setUser($security->getUser());
-            $verificationRequest->image = $imageFile;
-            $verificationRequest->setInitiationMessage($initiationMessage);
-            $initiateVerificationRequestEvent = new InitiateVerificationRequestEvent($verificationRequest);
+
+            $verificationRequestValidator->validate($data);
+            $imageString = $data->getImageString();
+            $imageFile = $base64StringToImageCoverter->buildUploadFileFromBase64String($imageString);
+            $data->setUser($security->getUser());
+            $data->imageFile = $imageFile;
+            $initiateVerificationRequestEvent = new InitiateVerificationRequestEvent($data);
             $eventDispatcher->dispatch($initiateVerificationRequestEvent, InitiateVerificationRequestEvent::NAME);
 
-            return $verificationRequest;
+            return $data;
 
         }catch (VerificationRequestException  $verificationRequestException){
             $message = [

@@ -1,3 +1,0 @@
-<?php //route_name_a15791bdc7e27e8689f7ca617dad3f85
-
-return [PHP_INT_MAX, 'api_blogs_get_item'];

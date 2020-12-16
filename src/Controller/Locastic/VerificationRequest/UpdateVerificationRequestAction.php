@@ -11,6 +11,7 @@ use App\Repository\VerificationRequestRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
 class UpdateVerificationRequestAction
@@ -30,11 +31,12 @@ class UpdateVerificationRequestAction
         LoggerInterface $logger,
         VerificationRequestRepository $verificationRequestRepository
     ){
+
         try {
             $verificationRequestUpdateEvent = new VerificationRequestUpdateEvent($data);
             $eventDispatcher->dispatch($verificationRequestUpdateEvent, VerificationRequestUpdateEvent::NAME);
 
-        }catch (VerificationRequestException  $verificationRequestException){
+        }catch (LocasticException  $verificationRequestException){
             $message = [
                 'message' => $verificationRequestException->getMessage()
             ];

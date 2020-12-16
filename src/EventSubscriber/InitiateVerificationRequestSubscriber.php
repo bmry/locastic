@@ -48,7 +48,7 @@ class InitiateVerificationRequestSubscriber implements EventSubscriberInterface
     )
     {
         $verificationRequest = $verificationRequestEvent->getVerificationRequest();
-        $image = $verificationRequest->getImage();
+        $image = $verificationRequest->imageFile;
         $imagePath = $this->fileUploader->upload($image);
         $verificationRequest->setImagePath($imagePath);
         $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_VERIFICATION_REQUESTED);

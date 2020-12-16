@@ -5,6 +5,7 @@ namespace App\Tests\Functional\Blog;
 
 
 use App\Tests\Functional\BaseTest;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class EditBlogTest extends BaseTest
 {

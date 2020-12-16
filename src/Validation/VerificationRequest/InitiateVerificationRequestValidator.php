@@ -2,6 +2,7 @@
 
 namespace App\Validation\VerificationRequest;
 
+use App\Entity\VerificationRequest;
 use App\Exception\VerificationRequest\VerificationRequestMissingParameterException;
 
 class InitiateVerificationRequestValidator
@@ -27,12 +28,14 @@ class InitiateVerificationRequestValidator
 
 
     /**
+     * @param VerificationRequest $verificationRequest
      * @throws VerificationRequestMissingParameterException
      * @throws \App\Exception\VerificationRequest\DuplicateVerificationRequestException
+     * @throws \App\Exception\VerificationRequest\VerificationRequestAlreadyApprovedException
      */
-    public function validate()
+    public function validate(VerificationRequest $verificationRequest)
     {
-        $this->verificationRequestParameterValidator->validate();
+        $this->verificationRequestParameterValidator->validate($verificationRequest);
         $this->nonDuplicateValidator->validate();
     }
 

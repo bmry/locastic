@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Exception\ImageUploadException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
@@ -15,12 +16,15 @@ class FileUploader
 
     private $targetDirectory;
     private $slugger;
+    private $kernel;
 
     public function __construct($targetDirectory, SluggerInterface $slugger)
     {
         $this->targetDirectory = $targetDirectory;
         $this->slugger = $slugger;
+
     }
+
 
     public function upload(UploadedFile $file)
     {
@@ -41,4 +45,7 @@ class FileUploader
     {
         return $this->targetDirectory;
     }
+
+
+
 }

@@ -6,7 +6,6 @@
 parameters:
   email_sender_address: '%env(EMAIL_SENDER_ADDRESS)%'
   email_sender_name: '%env(EMAIL_SENDER_NAME)%'
-  valid_domain: '%env(VALID_EMAIL_DOMAIN)%'
   image_dir: '%kernel.project_dir%/public/upload/image'
 
 services:

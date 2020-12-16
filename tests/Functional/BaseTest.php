@@ -8,6 +8,7 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
 use App\Repository\BlogRepository;
 use App\Repository\UserRepository;
+use App\Repository\VerificationRequestRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Routing\RouterInterface;
@@ -72,12 +73,33 @@ class BaseTest extends ApiTestCase
      */
     protected function getBlogByUser(string $userEmail)
     {
-        $user =  $testUser = $this->userRepository->findOneByEmail($userEmail);
+        $user = $this->userRepository->findOneByEmail($userEmail);
         $blogRepo = self::$container->get(BlogRepository::class);
-        $blog =  $blogRepo->findOneBy(['user' => $user]);
+        $blog = $blogRepo->findOneBy(['user' => $user]);
 
         return $blog;
-
     }
 
+    public function encodeFile($path)
+    {
+        $data = file_get_contents($path);
+        $mimeType = mime_content_type($path);
+        $base64 = sprintf('data:%s;base64,', $mimeType).base64_encode($data);
+
+        return $base64;
+    }
+
+    /**
+     * @param string $status
+     * @return \App\Entity\VerificationRequest|null
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function getVerifiedRequestByStatus(string $status)
+    {
+
+        $verificationRequestRepo = self::$container->get(VerificationRequestRepository::class);
+
+        return $verificationRequestRepo->findOneBy(['status' => $status,'user' => $this->currentTestUser]);
+
+    }
 }

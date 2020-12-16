@@ -7,6 +7,7 @@ namespace App\EventSubscriber;
 use App\Entity\Enum\EnumVerificationRequestStatusType;
 use App\Event\VerificationRequest\VerificationRequestUpdateEvent;
 use App\Exception\VerificationRequest\VerificationOperationDeniedException;
+use App\Service\Base64StringToImageCoverter;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -36,6 +37,10 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var Base64StringToImageCoverter
+     */
+    private $base64StringToImageConverter;
 
     /**
      * VerificationRequestUpdateSubscriber constructor.
@@ -45,13 +50,15 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
         EntityManagerInterface $entityManager,
         RequestStack $requestStack,
         FileUploader $fileUploader,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Base64StringToImageCoverter $base64StringToImageCoverter
     )
     {
         $this->entityManager = $entityManager;
         $this->request  = $requestStack->getCurrentRequest();
         $this->fileUploader = $fileUploader;
         $this->logger = $logger;
+        $this->base64StringToImageConverter = $base64StringToImageCoverter;
     }
 
     public static function getSubscribedEvents()
@@ -76,9 +83,11 @@ class VerificationRequestUpdateSubscriber implements EventSubscriberInterface
             throw new VerificationOperationDeniedException();
         }
 
-        if($this->request->files->has('image')){
-            $uploadedImage = $this->request->files->get('image');
-            $imagePath = $this->fileUploader->upload($uploadedImage);
+
+        if($verificationRequest->imageString){
+            $imageString = $verificationRequest->imageString;
+            $imageFile = $this->base64StringToImageConverter->buildUploadFileFromBase64String($imageString);
+            $imagePath = $this->fileUploader->upload($imageFile);
             $verificationRequest->setImagePath($imagePath);
         }
 

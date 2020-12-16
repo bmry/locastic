@@ -29,9 +29,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         "normalization_context"={"groups"={"user:read"}},
  *         "denormalization_context"={"groups"={"user:write"}},
  *          "controller" = "App\Controller\Locastic\VerificationRequest\UpdateVerificationRequestAction",
- *          "deserialize"=false,
  *          "path"="/verification_requests/{id}",
- *          "method"="POST",
+ *          "method"="PUT",
  *          "openapi_context"={
  *                  "summary"="Update verification request",
  *                  "parameters"={
@@ -75,30 +74,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *         "initiate_verification"={
  *             "controller"="App\Controller\Locastic\VerificationRequest\InitiateVerificationRequestAction",
  *             "path"="/verification_requests/initiate",
- *             "deserialize"=false,
  *             "method"= "POST",
- *             "security"="is_granted('ROLE_USER')",
  *             "normalization_context"={"groups"={"user:read"}},
- *             "denormalization_context"={"groups"={"user:write"}},
- *             "openapi_context"={
- *                 "requestBody"={
- *                     "content"={
- *                         "multipart/form-data"={
- *                             "schema"={
- *                                 "type"="object",
- *                                 "properties"={
- *                                     "file"={
- *                                         "type"="string",
- *                                         "format"="binary"
- *                                     }
- *                                 }
- *                             }
- *                         }
- *                     }
- *                 }
+ *             "denormalization_context"={"groups"={"user:write"}}
  *             }
- *         }
- *    }
+ *
+ *          }
  * )
  * @ORM\Entity(repositoryClass=VerificationRequestRepository::class)
  */
@@ -135,10 +116,14 @@ class VerificationRequest
     private $imagePath;
 
     /**
-     * @var File|null
-     * @Groups({"user:write"})
+     * @Groups({"user:write" })
      */
-    public $image;
+    public $imageString;
+
+    /**
+     * @var File|null
+     */
+    public $imageFile;
 
     /**
      * @Groups({"user:read","admin:read", "admin:write"})
@@ -192,9 +177,9 @@ class VerificationRequest
         }
     }
 
-    public function getImage()
+    public function getImageString()
     {
-        return $this->image;
+        return $this->imageString;
     }
 
 

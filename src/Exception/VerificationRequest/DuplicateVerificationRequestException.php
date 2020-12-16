@@ -9,7 +9,7 @@ class DuplicateVerificationRequestException extends VerificationRequestException
 
     public function __construct(\Throwable $previous = null)
     {
-        parent::__construct(self::MESSAGE, 403, $previous);
+        parent::__construct(self::MESSAGE, 409, $previous);
     }
 
 }

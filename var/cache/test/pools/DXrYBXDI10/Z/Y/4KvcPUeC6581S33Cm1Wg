@@ -65,9 +65,8 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                             ],
                         ],
                         'controller' => 'App\\Controller\\Locastic\\VerificationRequest\\UpdateVerificationRequestAction',
-                        'deserialize' => false,
                         'path' => '/verification_requests/{id}',
-                        'method' => 'POST',
+                        'method' => 'PUT',
                         'openapi_context' => [
                             'summary' => 'Update verification request',
                             'parameters' => [
@@ -248,9 +247,7 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                     'initiate_verification' => [
                         'controller' => 'App\\Controller\\Locastic\\VerificationRequest\\InitiateVerificationRequestAction',
                         'path' => '/verification_requests/initiate',
-                        'deserialize' => false,
                         'method' => 'POST',
-                        'security' => 'is_granted(\'ROLE_USER\')',
                         'normalization_context' => [
                             'groups' => [
                                 'user:read',
@@ -259,23 +256,6 @@ return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\
                         'denormalization_context' => [
                             'groups' => [
                                 'user:write',
-                            ],
-                        ],
-                        'openapi_context' => [
-                            'requestBody' => [
-                                'content' => [
-                                    'multipart/form-data' => [
-                                        'schema' => [
-                                            'type' => 'object',
-                                            'properties' => [
-                                                'file' => [
-                                                    'type' => 'string',
-                                                    'format' => 'binary',
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
                             ],
                         ],
                         'input' => null,

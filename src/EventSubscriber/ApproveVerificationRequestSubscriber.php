@@ -71,6 +71,7 @@ class ApproveVerificationRequestSubscriber implements EventSubscriberInterface
             $verificationRequest->setStatus(EnumVerificationRequestStatusType::TYPE_APPROVED);
             $user = $verificationRequest->getUser();
             $user->addRole(User::ROLE_BLOGGER);
+            $user->setProfilePicture($verificationRequest->getImagePath());
             $this->entityManager->flush();
 
             try {
