@@ -1,3 +1,0 @@
-<?php //route_name_7d36cb3bc7681b1ad1b5ba0301d8dffc
-
-return [PHP_INT_MAX, 'api_verification_requests_get_item'];

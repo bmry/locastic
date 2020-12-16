@@ -455,7 +455,7 @@
     <parameter key="api_platform.enable_swagger_ui">true</parameter>
     <parameter key="api_platform.enable_re_doc">true</parameter>
     <parameter key="api_platform.swagger.api_keys" type="collection">
-      <parameter key="BearerToken" type="collection">
+      <parameter key="apiKey" type="collection">
         <parameter key="name">Authorization</parameter>
         <parameter key="type">header</parameter>
       </parameter>
@@ -638,19 +638,6 @@
       <tag name="controller.service_arguments"/>
     </service>
     <service id="App\DTO\User\UserInput" class="App\DTO\User\UserInput" autowire="true" autoconfigure="true"/>
-    <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
-      <tag name="doctrine.fixture.orm"/>
-    </service>
-    <service id="App\DataFixtures\BlogFixture" class="App\DataFixtures\BlogFixture" autowire="true" autoconfigure="true">
-      <tag name="doctrine.fixture.orm"/>
-    </service>
-    <service id="App\DataFixtures\UserFixture" class="App\DataFixtures\UserFixture" autowire="true" autoconfigure="true">
-      <tag name="doctrine.fixture.orm"/>
-      <argument type="service" id="security.user_password_encoder.generic"/>
-    </service>
-    <service id="App\DataFixtures\VerificationRequestFixture" class="App\DataFixtures\VerificationRequestFixture" autowire="true" autoconfigure="true">
-      <tag name="doctrine.fixture.orm"/>
-    </service>
     <service id="App\DataPersister\BlogDataPersister" class="App\DataPersister\BlogDataPersister" autowire="true" autoconfigure="true">
       <tag name="api_platform.data_persister" priority="-1000"/>
       <argument type="service" id="App\DataPersister\BlogDataPersister.inner"/>
@@ -5993,24 +5980,7 @@
     <service id="doctrine.fixtures.loader" class="Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader" public="false">
       <argument type="service" id="service_container"/>
       <call method="addFixtures">
-        <argument type="collection">
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\AppFixtures"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\BlogFixture"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\UserFixture"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-          <argument type="collection">
-            <argument key="fixture" type="service" id="App\DataFixtures\VerificationRequestFixture"/>
-            <argument key="groups" type="collection"/>
-          </argument>
-        </argument>
+        <argument type="collection"/>
       </call>
     </service>
     <service id="nelmio_cors.cors_listener" class="Nelmio\CorsBundle\EventListener\CorsListener">
@@ -7668,14 +7638,6 @@
       <argument type="service" id="api_platform.identifiers_extractor.cached" on-invalid="ignore"/>
       <argument type="service" id="serializer.name_converter.metadata_aware" on-invalid="ignore"/>
     </service>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\BlogFixture" class="App\DataFixtures\BlogFixture" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\BlogFixture" class="App\DataFixtures\BlogFixture" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\UserFixture" class="App\DataFixtures\UserFixture" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\UserFixture" class="App\DataFixtures\UserFixture" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\VerificationRequestFixture" class="App\DataFixtures\VerificationRequestFixture" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\VerificationRequestFixture" class="App\DataFixtures\VerificationRequestFixture" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.ApiPlatform\Core\DataPersister\DataPersisterInterface.0.App\DataPersister\BlogDataPersister" class="App\DataPersister\BlogDataPersister" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\DataPersister\BlogDataPersister" class="App\DataPersister\BlogDataPersister" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\EventSubscriber\ApproveVerificationRequestSubscriber" class="App\EventSubscriber\ApproveVerificationRequestSubscriber" autowire="true" abstract="true"/>

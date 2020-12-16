@@ -5,7 +5,7 @@ api_platform:
         json: ['application/merge-patch+json','application/x-www-form-urlencoded']
     swagger:
          api_keys:
-             BearerToken:
+             apiKey:
                 name: Authorization
                 type: header
     name_converter: 'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'

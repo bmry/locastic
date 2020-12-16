@@ -447,6 +447,7 @@ return array(
     'App\\Entity\\VerificationRequest' => $baseDir . '/src/Entity/VerificationRequest.php',
     'App\\EventSubscriber\\ApproveVerificationRequestSubscriber' => $baseDir . '/src/EventSubscriber/ApproveVerificationRequestSubscriber.php',
     'App\\EventSubscriber\\DeclineVerificationRequestSubscriber' => $baseDir . '/src/EventSubscriber/DeclineVerificationRequestSubscriber.php',
+    'App\\EventSubscriber\\HashPasswordSubscriber' => $baseDir . '/src/EventSubscriber/HashPasswordSubscriber.php',
     'App\\EventSubscriber\\InitiateVerificationRequestSubscriber' => $baseDir . '/src/EventSubscriber/InitiateVerificationRequestSubscriber.php',
     'App\\EventSubscriber\\RegistrationSubscriber' => $baseDir . '/src/EventSubscriber/RegistrationSubscriber.php',
     'App\\EventSubscriber\\VerificationRequestUpdateSubscriber' => $baseDir . '/src/EventSubscriber/VerificationRequestUpdateSubscriber.php',

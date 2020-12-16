@@ -1180,6 +1180,7 @@ class ComposerStaticInite74ec454902902bc85f00434fdd758d0
         'App\\Entity\\VerificationRequest' => __DIR__ . '/../..' . '/src/Entity/VerificationRequest.php',
         'App\\EventSubscriber\\ApproveVerificationRequestSubscriber' => __DIR__ . '/../..' . '/src/EventSubscriber/ApproveVerificationRequestSubscriber.php',
         'App\\EventSubscriber\\DeclineVerificationRequestSubscriber' => __DIR__ . '/../..' . '/src/EventSubscriber/DeclineVerificationRequestSubscriber.php',
+        'App\\EventSubscriber\\HashPasswordSubscriber' => __DIR__ . '/../..' . '/src/EventSubscriber/HashPasswordSubscriber.php',
         'App\\EventSubscriber\\InitiateVerificationRequestSubscriber' => __DIR__ . '/../..' . '/src/EventSubscriber/InitiateVerificationRequestSubscriber.php',
         'App\\EventSubscriber\\RegistrationSubscriber' => __DIR__ . '/../..' . '/src/EventSubscriber/RegistrationSubscriber.php',
         'App\\EventSubscriber\\VerificationRequestUpdateSubscriber' => __DIR__ . '/../..' . '/src/EventSubscriber/VerificationRequestUpdateSubscriber.php',
