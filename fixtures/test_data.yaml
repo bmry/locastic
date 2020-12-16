@@ -3,37 +3,37 @@ App\Entity\User:
         firstName: Toni
         lastName: Locastic
         email: admin@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER','ROLE_ADMIN']
     verified_user:
         firstName: Toni
         lastName: Locastic
         email: blogger@locastic.com
-        password: Sambam1955@@
+        password: mobam1955@@
         roles: ['ROLE_USER','ROLE_BLOGGER']
     verified_user_2:
         firstName: Paula
         lastName: Čučuk
         email: blogger2@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER','ROLE_BLOGGER']
     verified_user_3:
         firstName: Paula
         lastName: Čučuk
         email: blogger3@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER','ROLE_BLOGGER']
     unverified_user:
         firstName: Morayo
         lastName: Bamgbose
         email: morayo@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER']
     unverified_user_2:
         firstName: Morayo
         lastName: Bamgbose
         email: mo@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER']
     unverified_user_3:
         firstName: Morayo
@@ -45,13 +45,13 @@ App\Entity\User:
         firstName: Morayo
         lastName: Bamgbose
         email: user_with_approved_vr@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER']
     user_with_declined_vr:
         firstName: Morayo
         lastName: Bamgbose
         email: declined_user@locastic.com
-        plainPassword: Sambam1955@@
+        plainPassword: mobam1955@@
         roles: ['ROLE_USER']
 
 App\Entity\Blog:
